@@ -103,12 +103,9 @@
 import { TrendingUp } from 'lucide-vue-next'
 import dayjs from 'dayjs'
 
-const store = useDashboardStore()
+const { loading, priceHistory, fetchPriceHistory } = useDashboard()
 const dashboardStore = useDashboardStore()
-const { fetchPriceHistory } = useDashboard()
 
-const loading = computed(() => store.loading)
-const priceHistory = computed(() => store.priceHistory)
 const hasMonthly = computed(() => !!dashboardStore.summary?.spending_by_month?.length)
 
 function formatDate(date: string) {

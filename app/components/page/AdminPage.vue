@@ -87,11 +87,7 @@
 <script setup lang="ts">
 import { Users, ShoppingBag, LayoutGrid, UserPlus, Activity } from 'lucide-vue-next'
 
-const store = useDashboardStore()
-const { fetchAdminStats } = useDashboard()
-
-const loading = computed(() => store.loading)
-const stats = computed(() => store.adminStats)
+const { loading, adminStats: stats, fetchAdminStats } = useDashboard()
 
 const cards = computed(() => [
   {

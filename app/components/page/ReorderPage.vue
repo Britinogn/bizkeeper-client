@@ -108,28 +108,24 @@
 </template>
 
 <script setup lang="ts">
-import { CheckCircle, AlertTriangle } from 'lucide-vue-next'
-import dayjs from 'dayjs'
+  import { CheckCircle, AlertTriangle } from 'lucide-vue-next'
+  import dayjs from 'dayjs'
 
-const store = useDashboardStore()
-const { fetchReorderReminders } = useDashboard()
+  const { loading, reorderReminders, fetchReorderReminders } = useDashboard()
 
-const loading = computed(() => store.loading)
-const reorderReminders = computed(() => store.reorderReminders)
+  const overdueCount = computed(() =>
+    reorderReminders.value.filter(i => i.days_since_last_purchase >= 30).length
+  )
 
-const overdueCount = computed(() =>
-  reorderReminders.value.filter(i => i.days_since_last_purchase >= 30).length
-)
+  const uniqueCategories = computed(() =>
+    new Set(reorderReminders.value.map(i => i.category)).size
+  )
 
-const uniqueCategories = computed(() =>
-  new Set(reorderReminders.value.map(i => i.category)).size
-)
+  function formatDate(date: string) {
+    return dayjs(date).format('MMM D, YYYY')
+  }
 
-function formatDate(date: string) {
-  return dayjs(date).format('MMM D, YYYY')
-}
-
-onMounted(async () => {
-  await fetchReorderReminders()
-})
+  onMounted(async () => {
+    await fetchReorderReminders()
+  })
 </script>
