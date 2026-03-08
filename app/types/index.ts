@@ -121,7 +121,7 @@ export interface DashboardSummary {
 }
 
 export interface PriceHistory {
-  product_name: string
+  product: string
   latest_price: number
   previous_price: number
   change: number
@@ -131,7 +131,7 @@ export interface ReorderReminder {
   product_name: string
   category: string
   last_purchased: string
-  days_since: number
+  days_since_last_purchase: number
 }
 
 // ─── Admin ───────────────────────────────────────────
