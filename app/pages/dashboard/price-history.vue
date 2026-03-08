@@ -1,5 +1,5 @@
 <template>
-  <PagePurchasesPage />
+  <PagePriceHistoryPage />
 </template>
 
 <script setup lang="ts">

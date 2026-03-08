@@ -1,5 +1,5 @@
 <template>
-  <PagePurchasesPage />
+  <PageReorderPage />
 </template>
 
 <script setup lang="ts">

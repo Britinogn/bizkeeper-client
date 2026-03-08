@@ -4,20 +4,36 @@ export const useAuth = () => {
     const store = useAuthStore()
     const loading = ref(false)
     const error = ref<string | null>(null)
+    const toast = useToast() 
 
     // clear error
     const clearError = () => { error.value = null }
 
-    async function login(payload:LoginPayload) {
+    // async function login(payload:LoginPayload) {
+    //     loading.value = true
+    //     clearError()
+    //     try {
+    //         await store.login(payload)
+    //     } catch (err: any) {
+    //         error.value = err?.data?.message || "Login failed. Please try again"
+    //     } finally{
+    //         loading.value = false
+    //     }
+    // }
+
+    async function login(payload: LoginPayload) {
         loading.value = true
         clearError()
         try {
             await store.login(payload)
+            toast.success('Welcome back!')
         } catch (err: any) {
-            error.value = err?.data?.message || "Login failed. Please try again"
-        } finally{
+            const msg = err?.data?.message || 'Login failed. Please try again'
+            error.value = msg
+            toast.error(msg)
+        } finally {
             loading.value = false
-        }
+    }
     }
 
     async function register(payload: RegisterPayload ) {

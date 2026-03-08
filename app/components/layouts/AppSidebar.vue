@@ -122,7 +122,7 @@ const navItems = [
   { label: 'Dashboard', to: '/dashboard', icon: LayoutDashboard },
   { label: 'Ledger', to: '/dashboard/purchases', icon: BookOpen },
   { label: 'Price History', to: '/dashboard/price-history', icon: TrendingUp },
-  { label: 'Reorder', to: '/dashboard/reorder', icon: Bell },
+  { label: 'Reorder', to: '/dashboard/reorder-reminders', icon: Bell },
   { label: 'Export', to: '/dashboard/export', icon: Download },
 ]
 

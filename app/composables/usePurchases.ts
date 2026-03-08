@@ -34,34 +34,45 @@ export const usePurchases = () => {
         loading.value = true
         clearError()
         try {
-        await store.createSession(payload)
+            await store.createSession(payload)
+            useToast().success('Session created successfully')
         } catch (err: any) {
-        error.value = err?.data?.message || 'Failed to create session.'
+            const msg = err?.data?.message || 'Failed to create session.'
+            error.value = msg
+            useToast().error(msg)
+            throw err
         } finally {
-        loading.value = false
+            loading.value = false
         }
     }
 
-
     async function updateSession(id: string, payload: CreatePurchaseSessionPayload) {
-        loading.value = true
-        clearError()
-        try {
-            await store.updateSession(id, payload)
-        } catch (err: any) {
-            error.value = err?.data?.message || 'Failed to update session.'
-        } finally {
-            loading.value = false
+    loading.value = true
+    clearError()
+    try {
+        await store.updateSession(id, payload)
+        useToast().success('Session updated successfully')
+    } catch (err: any) {
+        const msg = err?.data?.message || 'Failed to update session.'
+        error.value = msg
+        useToast().error(msg)
+        throw err
+    } finally {
+        loading.value = false
     }
     }
 
     async function deleteSession(id: string) {
-        loading.value = true
-        clearError()
+    loading.value = true
+    clearError()
     try {
         await store.deleteSession(id)
+        useToast().success('Session deleted successfully')
     } catch (err: any) {
-        error.value = err?.data?.message || 'Failed to delete session.'
+        const msg = err?.data?.message || 'Failed to delete session.'
+        error.value = msg
+        useToast().error(msg)
+        throw err
     } finally {
         loading.value = false
     }

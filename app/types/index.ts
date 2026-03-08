@@ -124,6 +124,7 @@ export interface PriceHistory {
   product: string
   latest_price: number
   previous_price: number
+  last_purchased: string
   change: number
 }
 
@@ -138,8 +139,10 @@ export interface ReorderReminder {
 export interface AdminStats {
   total_users: number
   total_sessions: number
-  total_products: number
+  total_product_items: number
   active_users: number
+  active_users_last_7_days : number
+  active_users_last_30_days : number
   new_users_this_month: number
 }
 

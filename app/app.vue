@@ -4,7 +4,6 @@
       <NuxtPage />
       <ToastAppToaster />
     </NuxtLayout>
-    <!-- <ThemeToggle /> -->
   </div>
 </template>
 
