@@ -72,7 +72,7 @@
       </div>
 
       <p class="text-center text-xs text-(--text-muted)">
-        Built by <a href="https://github.com/britinogn" target="_blank" class="text-blue-400 hover:underline">@britinogn</a> · Any amount is appreciated ❤️
+        Built by <a href="https://x.com/britinogn" target="_blank" class="text-blue-400 hover:underline">@britinogn</a> · Any amount is appreciated ❤️
       </p>
 
     </div>
@@ -92,13 +92,14 @@ async function copy(value: string, label: string) {
 
 // ← Fill in your real details here
 const bankDetails = [
-  { label: 'Bank Name', value: 'Your Bank Name' },
-  { label: 'Account Name', value: 'Your Full Name' },
-  { label: 'Account Number', value: '0000000000' },
+  { label: 'Bank Name', value: 'Opay' },
+  { label: 'Account Name', value: 'Bright' },
+  { label: 'Account Number', value: '6117562138' },
 ]
 
 const cryptoWallets = [
-  { label: 'USDT / USDC (TRC-20)', address: 'your-tron-wallet-address-here' },
-  { label: 'USDT / ETH (ERC-20)', address: 'your-eth-wallet-address-here' },
+  { label: 'USDT ', address: '0xc3f1b82FBFAE2f9A61e2E512AF197b8c997c4F15' },
+  { label: 'ETH', address: '0xc3f1b82FBFAE2f9A61e2E512AF197b8c997c4F15' },
+  { label: 'Solana', address: '4M65QgbTQoTSGX4kcaapkGhpZjuM1E5zGyYeSQ6PLak2' },
 ]
 </script>
