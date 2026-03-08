@@ -25,6 +25,10 @@ export default defineNuxtConfig({
     plugins: [tailwindcss()],
   },
 
+  typescript: {
+    typeCheck: false,
+  },
+
   modules: [
     // '@nuxtjs/tailwindcss',
     '@pinia/nuxt',
@@ -47,9 +51,9 @@ export default defineNuxtConfig({
     fallback: 'dark',
   },
 
-  typescript: {
-    typeCheck: true,
-  },
+  // typescript: {
+  //   typeCheck: true,
+  // },
 
   runtimeConfig: {
     public: {

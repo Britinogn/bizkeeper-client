@@ -1,6 +1,5 @@
 @import "tailwindcss";
 
-
 :root {
   --background: #0F0F0F;
   --surface: #1A1A1A;
@@ -11,7 +10,7 @@
   --text-muted: #888888;
 }
 
-.light {
+html.light {
   --background: #F8FAFC;
   --surface: #FFFFFF;
   --border: #E5E7EB;
@@ -20,7 +19,6 @@
   --text-primary: #0F0F0F;
   --text-muted: #6B7280;
 }
-
 
 html {
   font-family: 'Inter', sans-serif;
@@ -35,20 +33,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Custom scrollbar */
-::-webkit-scrollbar {
-  width: 6px;
-}
-
-::-webkit-scrollbar-track {
-  background: var(--surface);
-}
-
-::-webkit-scrollbar-thumb {
-  background: var(--border);
-  border-radius: 3px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: var(--primary);
-}
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--surface); }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--primary); }

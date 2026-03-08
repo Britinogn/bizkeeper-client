@@ -7,6 +7,8 @@
         Biz<span class="text-blue-500">Keeper</span>
       </span>
 
+      <!-- <ThemeToggle /> -->
+
       <ul class="hidden md:flex items-center gap-8 text-sm text-[#888]">
         <li v-for="link in navLinks" :key="link.label">
           <a :href="link.href" class="hover:text-white transition-colors">{{ link.label }}</a>
@@ -55,7 +57,7 @@
 
       <h1 class="text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight leading-tight max-w-3xl mb-5">
         Your business records,<br />
-        <span class="bg-gradient-to-r from-blue-500 to-indigo-400 bg-clip-text text-transparent">
+        <span class="bg-linear-to-r from-blue-500 to-indigo-400 bg-clip-text text-transparent">
           digital &amp; secure
         </span>
       </h1>
@@ -97,7 +99,7 @@
         </div>
 
         <div class="bg-[#1A1A1A] border border-[#2A2A2A] rounded-2xl overflow-hidden shadow-[0_40px_80px_rgba(0,0,0,0.6)]">
-          <div class="flex items-center gap-2 px-4 py-3 border-b border-[#2A2A2A] bg-white/[0.02]">
+          <div class="flex items-center gap-2 px-4 py-3 border-b border-[#2A2A2A] bg-white/2">
             <span class="w-2.5 h-2.5 rounded-full bg-[#ff5f57]" />
             <span class="w-2.5 h-2.5 rounded-full bg-[#febc2e]" />
             <span class="w-2.5 h-2.5 rounded-full bg-[#28c840]" />
@@ -147,7 +149,7 @@
                   <span>Supplier</span><span>Date</span><span class="text-right">Total</span>
                 </div>
                 <div v-for="row in previewRows" :key="row.supplier"
-                  class="grid grid-cols-3 px-2.5 py-1.5 border-b border-[#2A2A2A]/50 last:border-0 text-[10px] items-center hover:bg-white/[0.02]">
+                  class="grid grid-cols-3 px-2.5 py-1.5 border-b border-[#2A2A2A]/50 last:border-0 text-[10px] items-center hover:bg-white/2">
                   <span class="font-medium">{{ row.supplier }}</span>
                   <span class="text-[#888] text-[9px] font-mono">{{ row.date }}</span>
                   <span class="font-mono font-semibold text-right">{{ row.amount }}</span>
@@ -218,7 +220,7 @@
             <li v-for="f in plan.features" :key="f.text"
               class="flex items-center gap-2.5 text-sm"
               :class="f.included ? 'text-white' : 'text-[#888]/40'">
-              <span class="w-4 h-4 rounded-full flex items-center justify-center text-[9px] flex-shrink-0"
+              <span class="w-4 h-4 rounded-full flex items-center justify-center text-[9px] shrink-0"
                 :class="f.included ? 'bg-green-500/15 text-green-400' : 'bg-[#2A2A2A] text-[#888]'">
                 {{ f.included ? '✓' : '✕' }}
               </span>

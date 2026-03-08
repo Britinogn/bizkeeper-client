@@ -69,7 +69,7 @@ export const useAuth = () => {
     }
 
     function logout() {
-        store.logout
+        store.logout()
     }
 
     return {
