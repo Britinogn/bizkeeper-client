@@ -25,6 +25,8 @@
         </svg>
       </a>
 
+      <a href="/support" class="text-xs text-(--text-muted) hover:text-(--text-primary) transition-colors">Support</a>
+
       <div class="w-px h-4 bg-(--border)" />
       <a href="#" class="text-xs text-(--text-muted) hover:text-(--text-primary) transition-colors">Privacy</a>
       <a href="#" class="text-xs text-(--text-muted) hover:text-(--text-primary) transition-colors">Terms</a>
