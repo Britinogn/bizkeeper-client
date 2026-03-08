@@ -15,6 +15,12 @@ definePageMeta({ layout: 'dashboard', middleware: 'auth' })
 
 const { fetchSummary, fetchPriceHistory, fetchReorderReminders } = useDashboard()
 
+
+useSeoMeta({
+  title: 'Dashboard — BizKeeper',
+  // no need for ogImage etc on auth-protected pages
+})
+
 onMounted(async () => {
   await Promise.all([
     fetchSummary(),

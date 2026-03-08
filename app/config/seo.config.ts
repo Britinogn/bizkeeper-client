@@ -1,19 +1,19 @@
 // config/seo.config.ts
 
 export const seoConfig = {
-  appName: 'CourviaShip',
-  title: 'CourviaShip - Track & Manage Shipments Worldwide',
-  description: 'Real-time shipment tracking, fast logistics solutions, secure delivery updates, and easy management for businesses and individuals. Enter your tracking number to stay updated.',
-  keywords: 'shipment tracking, track package, logistics, courier tracking, delivery status, real-time tracking, shipping updates, global logistics, package tracker, CourviaShip',
-  url: 'https://courviaship.com', // ← change to your real domain
-  siteName: 'CourviaShip',
+  appName: 'BizKeeper',
+  title: 'BizKeeper - Digital Purchase Records for African Business Owners',
+  description: 'BizKeeper helps business owners in Africa ditch the notebook. Record bulk purchases, track spending by category, monitor price changes, and export reports as PDF or CSV — all in one secure place.',
+  keywords: 'business records app, purchase tracker Nigeria, digital ledger Africa, bulk purchase recording, spending tracker, price history, reorder reminders, business expense tracker, CSV export, PDF report, BizKeeper',
+  url: 'https://bizkeeper.com', // ← change to your real domain
+  siteName: 'BizKeeper',
   locale: 'en_US',
-  themeColor: '#10B981', // green-600
-  
+  themeColor: '#2563EB', // blue-600
+
   // Social images (replace with your actual assets)
   ogImage: '/og-image.jpg', // 1200x630 recommended
   twitterImage: '/twitter-image.jpg', // 1200x675 recommended
-  
+
   // JSON-LD Schema (Organization + WebApplication)
   schema: {
     '@context': 'https://schema.org',
@@ -21,41 +21,41 @@ export const seoConfig = {
       // Organization
       {
         '@type': 'Organization',
-        '@id': 'https://courviaship.com/#organization',
-        name: 'CourviaShip',
-        url: 'https://courviaship.com',
+        '@id': 'https://bizkeeper.com/#organization',
+        name: 'BizKeeper',
+        url: 'https://bizkeeper.com',
         logo: '/logo.png',
         sameAs: [
-          'https://twitter.com/backendchildcod', // update with real socials
-          'https://instagram.com/courviaship',
-          'https://linkedin.com/company/courviaship'
+          'https://twitter.com/britinogn',
+          'https://github.com/britinogn',
+          'https://linkedin.com/in/britinogn'
         ],
         contactPoint: {
           '@type': 'ContactPoint',
           telephone: '+234-000-000-0000',
           contactType: 'customer service',
-          email: 'support@courviaship.com',
+          email: 'support@bizkeeper.com',
           areaServed: 'NG'
         }
       },
       // WebApplication
       {
         '@type': 'WebApplication',
-        '@id': 'https://courviaship.com/#webapp',
-        name: 'CourviaShip',
-        url: 'https://courviaship.com',
-        description: 'Track shipments in real-time, manage logistics, and get delivery updates instantly.',
+        '@id': 'https://bizkeeper.com/#webapp',
+        name: 'BizKeeper',
+        url: 'https://bizkeeper.com',
+        description: 'Record bulk purchases, track spending, monitor price changes, and export digital ledger reports — built for business owners in Africa.',
         applicationCategory: 'BusinessApplication',
         operatingSystem: 'Web',
         offers: {
           '@type': 'Offer',
           price: '0',
-          priceCurrency: 'USD'
+          priceCurrency: 'NGN'
         },
         aggregateRating: {
           '@type': 'AggregateRating',
-          ratingValue: '4.9',
-          ratingCount: '3200',
+          ratingValue: '4.8',
+          ratingCount: '500',
           bestRating: '5',
           worstRating: '1'
         }

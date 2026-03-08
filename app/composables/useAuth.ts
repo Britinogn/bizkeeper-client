@@ -41,8 +41,11 @@ export const useAuth = () => {
         clearError()
         try {
             await store.register(payload)
+            toast.success('Account created successfully!')
         } catch (err: any) {
-            error.value = err?.data?.message || "Registration failed. Please try again"
+            const msg = err?.data?.message || 'Registration failed. Please try again'
+            error.value = msg
+            toast.error(msg)
         } finally{
             loading.value = false
         }
@@ -54,7 +57,9 @@ export const useAuth = () => {
         try {
             await store.fetchProfile()
         } catch (err: any) {
-            error.value = err?.data?.message || "Failed to load profile."
+            const msg = err?.data?.message || 'Failed to load profile.'
+            error.value = msg
+            toast.error(msg)
         } finally{
             loading.value = false
         }
@@ -65,8 +70,11 @@ export const useAuth = () => {
         clearError()
         try {
             await store.updateProfile(payload)
+            toast.success('Profile updated successfully!')
         } catch (err: any) {
-            error.value = err?.data?.message || 'Failed to update profile.'
+            const msg = err?.data?.message || 'Failed to update profile.'
+            error.value = msg
+            toast.error(msg)
         } finally{
             loading.value = false
         }
@@ -77,8 +85,11 @@ export const useAuth = () => {
         clearError()
         try {
             await store.deleteAccount()
+            toast.success('Account deleted successfully!')
         } catch (err: any) {
-            error.value = err?.data?.message || 'Failed to update profile.'
+            const msg = err?.data?.message || 'Failed to delete account.'
+            error.value = msg
+            toast.error(msg)
         } finally{
             loading.value = false
         }
@@ -86,6 +97,7 @@ export const useAuth = () => {
 
     function logout() {
         store.logout()
+        toast.success('Logged out successfully!')
     }
 
     return {

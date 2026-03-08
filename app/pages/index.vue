@@ -9,7 +9,7 @@
 definePageMeta({ middleware: 'guest' })
 
 useSeoMeta({
-  title: 'BizKeeper — Digital Ledger for Business Owners',
-  description: 'Track bulk purchases, monitor price changes and get reorder reminders. Built for Nigerian business owners.',
+  title: 'BizKeeper - Digital Purchase Records for African Business Owners',
+  description: 'Stop writing in books. Record bulk purchases...',
 })
 </script>

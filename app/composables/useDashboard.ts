@@ -2,6 +2,7 @@ export const useDashboard = () => {
     const store = useDashboardStore()
     const loading = ref(false)
     const error = ref<string | null>(null)
+    const toast = useToast()
 
     function clearError() { error.value = null }
 
@@ -11,7 +12,9 @@ export const useDashboard = () => {
         try {
             await store.fetchSummary()
         } catch (err: any) {
-            error.value = err?.data?.message || 'Failed to load dashboard summary.'
+            const msg = err?.data?.message || 'Failed to load dashboard summary.'
+            error.value = msg
+            toast.error(msg)
         } finally {
             loading.value = false
         }
@@ -23,7 +26,9 @@ export const useDashboard = () => {
         try {
             await store.fetchPriceHistory()
         } catch (err: any) {
-            error.value = err?.data?.message || 'Failed to load price history.'
+            const msg = err?.data?.message || 'Failed to load price history.'
+            error.value = msg
+            toast.error(msg)
         } finally {
             loading.value = false
         }
@@ -35,7 +40,9 @@ export const useDashboard = () => {
         try {
             await store.fetchReorderReminders()
         } catch (err: any) {
-            error.value = err?.data?.message || 'Failed to load reorder reminders.'
+            const msg = err?.data?.message || 'Failed to load reorder reminders.'
+            error.value = msg
+            toast.error(msg)
         } finally {
             loading.value = false
         }
@@ -47,7 +54,9 @@ export const useDashboard = () => {
         try {
             await store.fetchAdminStats()
         } catch (err: any) {
-            error.value = err?.data?.message || 'Failed to load admin stats.'
+            const msg = err?.data?.message || 'Failed to load admin stats.'
+            error.value = msg
+            toast.error(msg)
         } finally {
             loading.value = false
         }

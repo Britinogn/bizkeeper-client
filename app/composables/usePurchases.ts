@@ -4,6 +4,7 @@ export const usePurchases = () => {
     const store = usePurchasesStore()
     const loading = ref(false)
     const error = ref<string | null>(null)
+    const toast = useToast()
 
     function clearError() {error.value = null}
 
@@ -14,7 +15,9 @@ export const usePurchases = () => {
         try {
             await store.fetchSessions(limit, offset)
         } catch (err: any) {
-            error.value = err?.data?.message || 'Failed to load sessions.'
+            const msg = err?.data?.message || 'Failed to load sessions.'
+            error.value = msg
+            toast.error(msg)
         } finally {
             loading.value = false
         }
@@ -24,7 +27,9 @@ export const usePurchases = () => {
         try {
             await store.fetchSession(id)
         } catch (err: any) {
-            error.value = err?.data?.message || 'Failed to load session.'
+            const msg = err?.data?.message || 'Failed to load session.'
+            error.value = msg
+            toast.error(msg)
         } finally {
             loading.value = false
         }
@@ -35,11 +40,11 @@ export const usePurchases = () => {
         clearError()
         try {
             await store.createSession(payload)
-            useToast().success('Session created successfully')
+           toast.success('Session created successfully')
         } catch (err: any) {
             const msg = err?.data?.message || 'Failed to create session.'
             error.value = msg
-            useToast().error(msg)
+            toast.error(msg)
             throw err
         } finally {
             loading.value = false
@@ -51,11 +56,11 @@ export const usePurchases = () => {
     clearError()
     try {
         await store.updateSession(id, payload)
-        useToast().success('Session updated successfully')
+        toast.success('Session updated successfully')
     } catch (err: any) {
         const msg = err?.data?.message || 'Failed to update session.'
         error.value = msg
-        useToast().error(msg)
+        toast.error(msg)
         throw err
     } finally {
         loading.value = false
@@ -67,11 +72,11 @@ export const usePurchases = () => {
     clearError()
     try {
         await store.deleteSession(id)
-        useToast().success('Session deleted successfully')
+        toast.success('Session deleted successfully')
     } catch (err: any) {
         const msg = err?.data?.message || 'Failed to delete session.'
         error.value = msg
-        useToast().error(msg)
+        toast.error(msg)
         throw err
     } finally {
         loading.value = false

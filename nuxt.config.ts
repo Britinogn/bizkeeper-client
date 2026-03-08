@@ -1,4 +1,5 @@
 import tailwindcss from "@tailwindcss/vite";
+import outray from "@outray/vite";
 
 export default defineNuxtConfig({
   compatibilityDate: '2025-07-15',
@@ -22,7 +23,7 @@ export default defineNuxtConfig({
 
   vite: {
     // @ts-ignore - vite version mismatch between @tailwindcss/vite and nuxt
-    plugins: [tailwindcss()],
+    plugins: [tailwindcss(), outray()],
   },
 
   typescript: {
