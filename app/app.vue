@@ -2,9 +2,9 @@
   <div>
     <NuxtLayout>
       <NuxtPage />
+      <ToastAppToaster />
     </NuxtLayout>
     <!-- <ThemeToggle /> -->
-    <ToastAppToaster />
   </div>
 </template>
 
