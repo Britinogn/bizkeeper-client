@@ -13,7 +13,9 @@ export default defineNuxtConfig({
         { name: 'description', content: 'A digital ledger for business owners to track bulk purchases.' }
       ],
       link: [
-        { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
+        { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+        { rel: 'manifest', href: '/manifest.webmanifest' }, 
+        // {rel: "manifest", href: "/manifest.json"}
       ]
     }
   },
