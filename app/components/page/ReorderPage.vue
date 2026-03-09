@@ -63,8 +63,16 @@
       <!-- Empty -->
       <div v-else-if="!reorderReminders.length" class="px-4 py-12 text-center">
         <CheckCircle :size="32" class="text-green-400 mx-auto mb-3 opacity-60" />
-        <p class="text-sm font-medium text-(--text-primary)">All caught up</p>
-        <p class="text-xs text-(--text-muted) mt-1">No products need reordering right now</p>
+        <p class="text-sm font-medium text-(--text-primary)">No reminders yet</p>
+        <p class="text-xs text-(--text-muted) mt-1 max-w-xs mx-auto">
+          Once you've recorded a purchase session, any product not restocked within 14 days will appear here automatically.
+        </p>
+        <NuxtLink
+          to="/dashboard/purchases"
+          class="inline-flex items-center gap-1.5 mt-4 text-xs font-medium text-blue-400 hover:underline"
+        >
+          Add your first session →
+        </NuxtLink>
       </div>
 
       <!-- Items -->

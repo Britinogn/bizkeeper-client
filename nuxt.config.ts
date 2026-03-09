@@ -36,7 +36,8 @@ export default defineNuxtConfig({
     '@nuxt/image',
     '@nuxtjs/color-mode',
     '@nuxtjs/google-fonts',
-    '@nuxtjs/seo'
+    '@nuxtjs/seo',
+    '@vite-pwa/nuxt'
   ],
 
   googleFonts: {
@@ -52,9 +53,57 @@ export default defineNuxtConfig({
     fallback: 'dark',
   },
 
-  // typescript: {
-  //   typeCheck: true,
-  // },
+  pwa: {
+    registerType: 'autoUpdate',
+    manifest: {
+      name: 'BizKeeper',
+      short_name: 'BizKeeper',
+      description: 'Digital purchase records for African business owners',
+      theme_color: '#2563EB',
+      background_color: '#0F0F0F',
+      display: 'standalone',
+      orientation: 'portrait',
+      scope: '/',
+      start_url: '/',
+      icons: [
+        {
+          src: '/icons/icon-192.png',
+          sizes: '192x192',
+          type: 'image/png',
+        },
+        {
+          src: '/icons/icon-512.png',
+          sizes: '512x512',
+          type: 'image/png',
+        },
+        {
+          src: '/icons/icon-512.png',
+          sizes: '512x512',
+          type: 'image/png',
+          purpose: 'maskable',
+        },
+      ],
+    },
+    workbox: {
+      navigateFallback: '/',
+      globPatterns: ['**/*.{js,css,html,png,svg,ico}'],
+    },
+    devOptions: {
+      enabled: true,
+      type: 'module',
+    },
+  },
+
+  routeRules: {
+    '/**': {
+      headers: {
+        'X-Content-Type-Options': 'nosniff',
+        'X-Frame-Options': 'DENY',
+        'X-XSS-Protection': '1; mode=block',
+        'Referrer-Policy': 'strict-origin-when-cross-origin',
+      }
+    }
+  },
 
   runtimeConfig: {
     public: {
