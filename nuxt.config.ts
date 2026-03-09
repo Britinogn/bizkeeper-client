@@ -109,7 +109,7 @@ export default defineNuxtConfig({
 
   runtimeConfig: {
     public: {
-      baseURL: process.env.NUXT_PUBLIC_API_BASE || 'http://localhost:8080/api',
+      baseURL: process.env.NUXT_PUBLIC_API_BASE || 'https://bizkeeper-backend.onrender.com/api',
     },
   },
 })
