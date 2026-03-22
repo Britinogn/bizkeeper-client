@@ -2,87 +2,164 @@
   <div>
 
     <!-- How it works -->
-    <section id="how-it-works" class="px-6 md:px-12 py-24 bg-(--background)">
-      <div class="text-center mb-14">
-        <p class="text-xs font-semibold text-blue-400 uppercase tracking-widest mb-3">How it works</p>
-        <h2 class="text-3xl sm:text-4xl font-extrabold tracking-tight mb-3 text-(--text-primary)">Up and running in minutes</h2>
-        <p class="text-base text-(--text-muted) max-w-sm mx-auto leading-relaxed">Four simple steps to your first digital ledger entry.</p>
+    <section id="how-it-works" class="px-6 md:px-12 py-20 lg:py-28 bg-(--background)">
+      <div class="text-center mb-16">
+        <p class="text-sm font-semibold text-blue-500 uppercase tracking-wider mb-4">How It Works</p>
+        <h2 class="text-4xl sm:text-5xl font-extrabold tracking-tight text-(--text-primary) mb-4">
+          Get started in minutes
+        </h2>
+        <p class="text-lg text-(--text-muted) max-w-2xl mx-auto leading-relaxed">
+          Four simple steps to turn your business records into digital records with no technical skills needed
+        </p>
       </div>
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 relative">
-        <div class="hidden lg:block absolute top-7 left-[calc(12.5%+28px)] right-[calc(12.5%+28px)] h-px bg-(--border)" />
-        <div v-for="step in steps" :key="step.num" class="flex flex-col items-center text-center relative z-10">
-          <div class="w-14 h-14 rounded-full bg-(--surface) border border-(--border) flex items-center justify-center text-base font-bold font-mono text-(--text-primary) mb-5 hover:bg-blue-600 hover:border-blue-600 transition-all">
-            {{ step.num }}
+
+      <div class="relative max-w-6xl mx-auto">
+        <!-- Horizontal connector line (visible on lg+) -->
+        <div class="hidden lg:block absolute top-10 left-0 right-0 h-0.5 bg-(--border)" />
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-6 relative z-10">
+          <div
+            v-for="step in steps"
+            :key="step.num"
+            class="group relative flex flex-col items-center text-center bg-(--surface) border border-(--border) rounded-2xl p-8 shadow-sm hover:shadow-md hover:border-blue-400 hover:-translate-y-1 transition-all duration-300"
+          >
+            <!-- Number circle with hover effect -->
+            <div class="w-16 h-16 rounded-full bg-(--surface) border-2 border-blue-200 text-blue-600 flex items-center justify-center text-2xl font-bold font-mono mb-6 group-hover:bg-blue-600 group-hover:text-white group-hover:border-blue-600 transition-all duration-300 shadow-sm">
+              {{ step.num }}
+            </div>
+
+            <!-- Optional: Add icon here (recommended!) -->
+            <!-- <component :is="step.icon" class="w-10 h-10 text-blue-500 mb-4 group-hover:text-white transition-colors" /> -->
+
+            <h3 class="text-lg font-semibold text-(--text-primary) mb-3">{{ step.title }}</h3>
+            <p class="text-sm text-(--text-muted) leading-relaxed">{{ step.desc }}</p>
+
+            <!-- Arrow indicator on mobile/small screens (optional visual flow) -->
+            <div class="lg:hidden mt-6 text-blue-400">
+              <ArrowDown v-if="step.num " :size="24" />
+            </div>
           </div>
-          <h3 class="text-sm font-semibold mb-2 text-(--text-primary)">{{ step.title }}</h3>
-          <p class="text-sm text-(--text-muted) leading-relaxed">{{ step.desc }}</p>
         </div>
       </div>
     </section>
 
     <!-- Pricing -->
-    <section id="pricing" class="px-6 md:px-12 py-24 bg-(--surface) border-t border-b border-(--border)">
-      <div class="text-center mb-14">
-        <p class="text-xs font-semibold text-blue-400 uppercase tracking-widest mb-3">Pricing</p>
-        <h2 class="text-3xl sm:text-4xl font-extrabold tracking-tight mb-3 text-(--text-primary)">Simple, honest pricing</h2>
-        <p class="text-base text-(--text-muted) max-w-xs mx-auto leading-relaxed">Start free. Upgrade when you're ready.</p>
+    <section id="pricing" class="px-6 md:px-12 py-20 lg:py-28 bg-(--surface) border-t border-b border-(--border)">
+      <div class="text-center mb-16">
+        <p class="text-sm font-semibold text-blue-500 uppercase tracking-wider mb-4">Pricing</p>
+        <h2 class="text-4xl sm:text-5xl font-extrabold tracking-tight text-(--text-primary) mb-4">
+          Simple, honest pricing
+        </h2>
+        <p class="text-lg text-(--text-muted) max-w-xl mx-auto leading-relaxed">
+          Start free forever. Upgrade only when your business grows — no surprises.
+        </p>
       </div>
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-5 max-w-4xl mx-auto">
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 max-w-6xl mx-auto">
         <div
           v-for="plan in pricing"
           :key="plan.tier"
-          class="relative rounded-2xl p-8 border transition-colors"
-          :class="plan.featured ? 'border-blue-600 bg-blue-600/10' : 'border-(--border) bg-(--surface) hover:border-[#444]'"
+          class="relative rounded-2xl p-8 border transition-all duration-300"
+          :class="[
+            plan.featured 
+              ? 'border-blue-600 bg-blue-600/5 shadow-xl scale-[1.04] md:scale-105 hover:scale-[1.06]' 
+              : 'border-(--border) bg-(--surface) hover:border-blue-400 hover:shadow-lg'
+          ]"
         >
-          <div v-if="plan.featured" class="absolute -top-3 left-1/2 -translate-x-1/2 bg-blue-600 text-white text-[11px] font-semibold px-3 py-1 rounded-full">
+          <!-- Featured badge -->
+          <div 
+            v-if="plan.featured" 
+            class="absolute -top-3 left-1/2 -translate-x-1/2 bg-blue-600 text-white text-xs font-semibold px-4 py-1.5 rounded-full shadow-md"
+          >
             Most Popular
           </div>
-          <p class="text-xs font-medium text-(--text-muted) mb-2">{{ plan.tier }}</p>
-          <p class="text-4xl font-extrabold font-mono tracking-tight text-(--text-primary) mb-1">{{ plan.price }}</p>
-          <p class="text-xs text-(--text-muted) mb-5">{{ plan.period }}</p>
-          <p class="text-sm text-(--text-muted) leading-relaxed mb-6">{{ plan.desc }}</p>
-          <ul class="space-y-2.5 mb-7">
+
+          <p class="text-sm font-medium text-(--text-muted) mb-3">{{ plan.tier }}</p>
+          
+          <div class="flex items-baseline mb-2">
+            <p class="text-5xl font-extrabold font-mono tracking-tight text-(--text-primary)">
+              {{ plan.price }}
+            </p>
+            <span class="text-xl font-medium text-(--text-muted) ml-1">/mo</span>
+          </div>
+
+          <p class="text-sm text-(--text-muted) mb-6">{{ plan.period || 'Billed monthly • Cancel anytime' }}</p>
+
+          <p class="text-base text-(--text-primary) leading-relaxed mb-8">{{ plan.desc }}</p>
+
+          <ul class="space-y-3 mb-8">
             <li
               v-for="f in plan.features"
               :key="f.text"
-              class="flex items-center gap-2.5 text-sm"
-              :class="f.included ? 'text-(--text-primary)' : 'text-(--text-muted) opacity-40'"
+              class="flex items-center gap-3 text-sm"
+              :class="f.included ? 'text-(--text-primary)' : 'text-(--text-muted) opacity-60'"
             >
               <span
-                class="w-4 h-4 rounded-full flex items-center justify-center shrink-0"
-                :class="f.included ? 'bg-green-500/15' : 'bg-(--border)'"
+                class="w-5 h-5 rounded-full flex items-center justify-center shrink-0 border"
+                :class="f.included 
+                  ? 'bg-green-500/10 border-green-500/30' 
+                  : 'bg-(--border) border-(--border)'"
               >
-                <Check v-if="f.included" :size="10" class="text-green-400" />
-                <X v-else :size="10" class="text-(--text-muted)" />
+                <Check v-if="f.included" :size="14" class="text-green-500" />
+                <X v-else :size="14" class="text-(--text-muted)" />
               </span>
               {{ f.text }}
             </li>
           </ul>
+
           <NuxtLink
             to="/auth/register"
-            class="flex items-center justify-center w-full py-2.5 rounded-lg text-sm font-medium transition-colors"
-            :class="plan.featured ? 'bg-blue-600 text-white hover:bg-blue-700' : 'border border-(--border) text-(--text-primary) hover:border-[#444]'"
+            class="flex items-center justify-center w-full py-3.5 rounded-xl text-base font-semibold transition-all duration-300"
+            :class="plan.featured 
+              ? 'bg-blue-600 text-white hover:bg-blue-700 shadow-md hover:shadow-lg' 
+              : 'border-2 border-(--border) text-(--text-primary) hover:border-blue-400 hover:bg-blue-50/50'"
           >
-            {{ plan.cta }}
+            {{ plan.cta || (plan.featured ? 'Start Free Trial' : 'Get Started') }}
           </NuxtLink>
         </div>
       </div>
+
+      <!-- Trust footer note -->
+      <p class="text-center text-sm text-(--text-muted) mt-12">
+        No credit card required to start. 14-day free access to all features on upgrade.
+      </p>
     </section>
 
     <!-- CTA -->
-    <section class="px-6 md:px-12 py-24 bg-(--background) text-center border-b border-(--border)">
-      <p class="text-xs font-semibold text-blue-400 uppercase tracking-widest mb-3">Get started today</p>
-      <h2 class="text-3xl sm:text-4xl font-extrabold tracking-tight mb-4 text-(--text-primary)">Ready to ditch the notebook?</h2>
-      <p class="text-base text-(--text-muted) max-w-sm mx-auto leading-relaxed mb-9">
-        Join business owners already using BizKeeper for cleaner, smarter records.
-      </p>
-      <div class="flex items-center justify-center gap-3 flex-wrap">
-        <NuxtLink to="/auth/register" class="px-7 py-3.5 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-xl transition-colors">
-          Create free account
-        </NuxtLink>
-        <a href="#features" class="px-7 py-3.5 text-sm font-medium text-(--text-primary) border border-(--border) hover:border-[#444] rounded-xl transition-colors">
-          Learn more
-        </a>
+    <section class="px-6 md:px-12 py-20 lg:py-28 bg-(--background) text-center border-b border-(--border)">
+      <div class="max-w-3xl mx-auto">
+        <p class="text-sm font-semibold text-blue-500 uppercase tracking-wider mb-4">
+          Get Started Today
+        </p>
+
+        <h2 class="text-3xl sm:text-3xl lg:text-6xl font-extrabold tracking-tight text-(--text-primary) mb-5 leading-tight">
+          Ready to ditch the notebook<br class="hidden sm:inline" /> and spreadsheets?
+        </h2>
+
+        <p class="text-lg sm:text-xl text-(--text-muted) max-w-2xl mx-auto leading-relaxed mb-10">
+          Join hundreds of African retailers and wholesalers already saving hours every week with BizKeeper.
+        </p>
+
+        <div class="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6">
+          <NuxtLink
+            to="/auth/register"
+            class="w-full sm:w-auto px-8 py-4 text-base font-semibold text-white bg-blue-600 hover:bg-blue-700 rounded-xl transition-all hover:scale-[1.02] shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+          >
+            Create Free Account — Takes 60 Seconds
+          </NuxtLink>
+
+          <a
+            href="#features"
+            class="w-full sm:w-auto px-8 py-4 text-base font-semibold text-(--text-primary) border border-(--border) hover:border-blue-400 hover:bg-blue-50/50 rounded-xl transition-all"
+          >
+            See Features First
+          </a>
+        </div>
+
+        <!-- Trust micro-copy – very important for conversion in African markets -->
+        <p class="mt-8 text-sm text-(--text-muted)">
+          No credit card needed • Cancel anytime • 100% free to start
+        </p>
       </div>
     </section>
 
