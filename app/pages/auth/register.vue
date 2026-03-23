@@ -4,14 +4,14 @@
     <div class="w-full max-w-md">
       <!-- Logo -->
       <div class="text-center mb-8">
-        <NuxtLink to="/" class="text-xl font-bold tracking-tight text-white">
+        <NuxtLink to="/" class="text-2xl font-semibold tracking-tight text-white">
           Biz<span class="text-blue-500">Keeper</span>
         </NuxtLink>
-        <p class="text-sm text-[#888] mt-2">Create your account</p>
+        <p class="text-sm text-[#888] mt-2">Create an account</p>
       </div>
 
       <!-- Card -->
-      <div class="rounded-2xl p-8 border border-[#2A2A2A]" style="background-color: #1A1A1A;">
+      <div class="rounded-2xl shadow-xl p-8 border border-[#2A2A2A]" style="background-color: #1A1A1A;">
 
         <!-- Error -->
         <div v-if="error" class="mb-5 px-4 py-3 rounded-lg text-sm text-red-400 border border-red-500/20 bg-red-500/10">
@@ -55,7 +55,7 @@
             <input
               v-model="form.email"
               type="email"
-              placeholder="info@bizkeeper.com"
+              placeholder="you@example.com"
               required
               class="w-full px-3 py-2.5 rounded-lg text-sm text-white outline-none transition-colors"
               style="background-color: #0F0F0F; border: 1px solid #2A2A2A;"
@@ -71,7 +71,7 @@
               <input
                 v-model="form.password"
                 :type="showPassword ? 'text' : 'password'"
-                placeholder="Min. 8 characters"
+                placeholder="Minimum 8 characters"
                 required
                 class="w-full px-3 py-2.5 pr-10 rounded-lg text-sm text-white outline-none transition-colors"
                 style="background-color: #0F0F0F; border: 1px solid #2A2A2A;"
@@ -92,12 +92,12 @@
           <button
             type="submit"
             :disabled="loading"
-            class="w-full py-3 rounded-lg text-sm font-medium text-white transition-colors mt-1"
+            class="w-full py-3 rounded-lg text-sm font-semibold text-white transition-colors mt-1"
             :style="loading ? 'background-color: #1E3A8A; opacity: 0.6; cursor: not-allowed;' : 'background-color: #1E3A8A;'"
             @mouseenter="!loading && (($event.target as HTMLButtonElement).style.backgroundColor = '#2563EB')"
             @mouseleave="!loading && (($event.target as HTMLButtonElement).style.backgroundColor = '#1E3A8A')"
           >
-            {{ loading ? 'Creating account...' : 'Create account' }}
+            {{ loading ? 'Creating your account...' : 'Create your account' }}
           </button>
         </form>
 

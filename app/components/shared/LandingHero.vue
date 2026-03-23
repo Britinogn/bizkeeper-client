@@ -2,26 +2,26 @@
   <div>
 
     <!-- Hero -->
-    <section class="min-h-screen flex items-center bg-(--background) px-6 md:px-12 pt-28 pb-20 relative overflow-hidden">
+    <section class="min-h-screen flex items-center bg-(--background) px-6 md:px-12 sm:pt-24 sm:pb-16 pt-28 pb-20 relative overflow-hidden">
       <div class="max-w-7xl mx-auto w-full grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
         <!-- LEFT CONTENT -->
         <div class="text-center lg:text-left flex flex-col items-center lg:items-start order-2 lg:order-1">
           <!-- Badge -->
           <div class="inline-flex items-center gap-2.5 px-5 py-2.5 rounded-full text-sm font-medium text-blue-600 border border-blue-200 bg-blue-50 mb-8">
             <span class="w-2 h-2 rounded-full bg-blue-500" />
-            Built for African shop owners
+            Designed for African retailers & wholesalers
           </div>
 
           <!-- Headline -->
           <h1 class="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tight text-(--text-primary) leading-tight mb-6">
-            Business records
+            Manage your business records
             <span class="block text-blue-600">clean, digital & secure</span>
           </h1>
 
           <!-- Description / Promise -->
           <p class="text-lg sm:text-xl text-(--text-muted) max-w-xl leading-relaxed mb-10">
-            Track purchases, suppliers, stock and sales in seconds.<br class="hidden sm:block" />
-            No more notebooks. No spreadsheets. Just clarity.
+            Track purchases suppliers inventory and sales instantly.<br class="hidden sm:block" />
+            Say goodbye to notebooks and spreadsheets. Gain clarity and control.
           </p>
 
           <!-- CTA -->
@@ -30,10 +30,10 @@
               to="/auth/register"
               class="group w-full sm:w-auto flex items-center justify-center gap-2.5 px-8 py-4 text-base font-semibold text-white bg-blue-600 hover:bg-blue-700 rounded-xl transition-all hover:scale-[1.02] active:scale-[0.98] shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
             >
-              Start Your Free Ledger
-              <ArrowRight :size="18" class="transition-transform group-hover:translate-x-1" />
+              Start Free Accounting Now
+                <ArrowRight :size="18" class="transition-transform group-hover:translate-x-1" aria-hidden="true" />            
             </NuxtLink>
-
+            
             <a
               href="#how-it-works"
               class="w-full sm:w-auto flex items-center justify-center px-8 py-4 text-base font-semibold text-(--text-primary) border border-(--border) hover:border-blue-400 hover:bg-blue-50/50 rounded-xl transition-all active:scale-[0.98]"
@@ -196,10 +196,11 @@
           Features
         </p>
         <h2 class="text-4xl sm:text-5xl font-extrabold tracking-tight text-(--text-primary) mb-5">
-          Everything you need to run your shop smarter
+          Everything you need to run your business smarter and faster.
         </h2>
         <p class="text-lg text-(--text-muted) leading-relaxed">
-          Replace messy notebooks and spreadsheets with clean, secure digital records that are always accessible, built for African retailers and wholesalers
+          Replace notebooks and spreadsheets with clean secure digital records 
+          always accessible built for African retailers and wholesalers
         </p>
       </div>
 
@@ -218,6 +219,7 @@
               :is="feature.icon"
               :size="28"
               :class="feature.iconClass || 'text-orange-600'"
+              aria-hidden="true"
             />
           </div>
 
@@ -299,7 +301,7 @@ const features = ref([
     icon: TrendingUp,
     iconBg: 'rgba(155,109,255,0.12)',
     iconColor: '#9B6DFF',
-    iconClass: "text-orange-600",
+    iconClass: "text-purple-600",
     title: 'Price Tracking',
     desc: 'Track price changes for every product automatically. Easily see if items like rice or oil have increased since your last purchase.',
   },
@@ -307,6 +309,7 @@ const features = ref([
     icon: Bell,
     iconBg: 'rgba(245,166,35,0.12)',
     iconColor: '#F5A623',
+    iconClass: "text-yellow-600",
     title: 'Reorder Alerts',
     desc: 'Get notified when a product has not been restocked for some time. Stay on top of your inventory and avoid running out.',
   },
@@ -314,6 +317,7 @@ const features = ref([
     icon: Download,
     iconBg: 'rgba(240,79,90,0.12)',
     iconColor: '#F04F5A',
+    iconClass: "text-red-600",
     title: 'Download Reports',
     desc: 'Export your records as PDF or CSV anytime. Share them with your accountant or open them in Excel.',
   },
@@ -321,6 +325,7 @@ const features = ref([
     icon: Lock,
     iconBg: 'rgba(37,99,235,0.08)',
     iconColor: '#2563EB',
+    iconClass: "text-blue-600",
     title: 'Fully Private',
     desc: 'Your records are yours alone. No one else can access your data, with protection enforced at the database level.',
   },

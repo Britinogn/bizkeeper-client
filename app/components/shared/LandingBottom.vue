@@ -9,7 +9,7 @@
           Get started in minutes
         </h2>
         <p class="text-lg text-(--text-muted) max-w-2xl mx-auto leading-relaxed">
-          Four simple steps to turn your business records into digital records with no technical skills needed
+          Four simple steps to turn your business records into digital system with no technical skills needed
         </p>
       </div>
 
@@ -29,14 +29,16 @@
             </div>
 
             <!-- Optional: Add icon here (recommended!) -->
-            <!-- <component :is="step.icon" class="w-10 h-10 text-blue-500 mb-4 group-hover:text-white transition-colors" /> -->
-
+            <component 
+              :is="step.icon" 
+              class="w-10 h-10 text-blue-500 mb-4 group-hover:text-(--text-primary) transition-colors" 
+            />
             <h3 class="text-lg font-semibold text-(--text-primary) mb-3">{{ step.title }}</h3>
             <p class="text-sm text-(--text-muted) leading-relaxed">{{ step.desc }}</p>
 
             <!-- Arrow indicator on mobile/small screens (optional visual flow) -->
             <div class="lg:hidden mt-6 text-blue-400">
-              <ArrowDown v-if="step.num " :size="24" />
+              <ArrowDown v-if="step.num !== '04'" :size="24" />
             </div>
           </div>
         </div>
@@ -133,7 +135,7 @@
         </p>
 
         <h2 class="text-3xl sm:text-3xl lg:text-6xl font-extrabold tracking-tight text-(--text-primary) mb-5 leading-tight">
-          Ready to ditch the notebook<br class="hidden sm:inline" /> and spreadsheets?
+          Ready to replace the notebook<br class="hidden sm:inline" /> and spreadsheets for good?
         </h2>
 
         <p class="text-lg sm:text-xl text-(--text-muted) max-w-2xl mx-auto leading-relaxed mb-10">
@@ -145,20 +147,20 @@
             to="/auth/register"
             class="w-full sm:w-auto px-8 py-4 text-base font-semibold text-white bg-blue-600 hover:bg-blue-700 rounded-xl transition-all hover:scale-[1.02] shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
           >
-            Create Free Account — Takes 60 Seconds
+            Create your free account in 60 seconds
           </NuxtLink>
 
           <a
             href="#features"
             class="w-full sm:w-auto px-8 py-4 text-base font-semibold text-(--text-primary) border border-(--border) hover:border-blue-400 hover:bg-blue-50/50 rounded-xl transition-all"
           >
-            See Features First
+            View features
           </a>
         </div>
 
         <!-- Trust micro-copy – very important for conversion in African markets -->
         <p class="mt-8 text-sm text-(--text-muted)">
-          No credit card needed • Cancel anytime • 100% free to start
+          No card required • Cancel anytime • Free to start
         </p>
       </div>
     </section>
@@ -167,20 +169,40 @@
 </template>
 
 <script setup lang="ts">
-import { Check, X } from 'lucide-vue-next'
+import { Check, X , UserPlus, PlusCircle, Package, BarChart3 } from 'lucide-vue-next'
 
 const steps = [
-  { num: '01', title: 'Create your account', desc: 'Sign up with your name and email. Your account is your private workspace.' },
-  { num: '02', title: 'Open a session', desc: 'Tap "New Session" and enter the supplier, date, and payment method.' },
-  { num: '03', title: 'Add your products', desc: 'List every product bought — name, quantity, price, category. Save once.' },
-  { num: '04', title: 'Track & export', desc: 'Dashboard updates instantly. View summaries, spot price changes, export anytime.' },
+  { 
+    num: '01', 
+    icon: UserPlus,
+    title: 'Create your account', 
+    desc: 'Sign up with your name and email. Your account becomes your private workspace.' 
+  },
+  { 
+    num: '02', 
+    icon: PlusCircle,
+    title: 'Start a new session', 
+    desc: 'Create a session and enter the supplier, date, and payment method.' 
+  },
+  { 
+    num: '03', 
+    icon: Package,
+    title: 'Add your products', 
+    desc: 'Enter each product with its name, quantity, price, and category. Save everything at once.' 
+  },
+  { 
+    num: '04', 
+    icon: BarChart3,
+    title: 'Track and export', 
+    desc: 'Your dashboard updates instantly. View summaries, track price changes, and export anytime.' 
+  },
 ]
 
 const pricing = [
   {
-    tier: 'Starter', price: 'Free', period: 'forever', featured: false,
+    tier: 'Starter', price: 'Free', period: 'Free forever', featured: false,
     desc: 'Perfect for individuals getting started with digital records.',
-    cta: 'Get started free',
+    cta: 'Start free',
     features: [
       { text: 'Up to 30 sessions/month', included: true },
       { text: 'Spending summary', included: true },
@@ -192,7 +214,7 @@ const pricing = [
   {
     tier: 'Pro', price: '₦2,500', period: 'per month', featured: true,
     desc: 'For business owners who need the full picture — exports, alerts, and unlimited records.',
-    cta: 'Get started',
+    cta: 'Start free trial',
     features: [
       { text: 'Unlimited sessions', included: true },
       { text: 'Spending summary', included: true },
@@ -204,7 +226,7 @@ const pricing = [
   {
     tier: 'Enterprise', price: 'Custom', period: 'contact us', featured: false,
     desc: 'For larger operations needing dedicated support and custom integrations.',
-    cta: 'Contact us',
+    cta: 'Contact sales',
     features: [
       { text: 'Everything in Pro', included: true },
       { text: 'Admin dashboard', included: true },
