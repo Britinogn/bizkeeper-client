@@ -27,7 +27,7 @@
         <div class="flex items-center justify-between mb-3">
           <p class="text-xs font-medium text-(--text-muted) uppercase tracking-wide">{{ card.label }}</p>
           <div class="w-8 h-8 rounded-lg flex items-center justify-center" :style="{ background: card.iconBg }">
-            <component :is="card.icon" :size="15" :style="{ color: card.iconColor }" />
+            <component :is="card.icon" :size="15" :style="{ color: card.iconColor }" aria-hidden="true" />
           </div>
         </div>
         <p class="text-xl font-bold text-(--text-primary) font-mono tracking-tight">{{ card.value }}</p>
