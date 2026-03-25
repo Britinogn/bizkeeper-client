@@ -106,7 +106,7 @@
             >
               <option value="">All roles</option>
               <option value="admin">Admin</option>
-              <option value="user">User</option>
+              <option value="owner">User</option>
             </select>
           </div>
         </div>
