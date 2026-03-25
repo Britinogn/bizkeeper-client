@@ -8,12 +8,12 @@ export const usePurchases = () => {
 
     function clearError() {error.value = null}
 
-    async function fetchSessions(limit = 10, offset = 0) {
+    async function fetchSessions(limit = 10, offset = 0, search = '') {
         loading.value = true 
         clearError()
 
         try {
-            await store.fetchSessions(limit, offset)
+            await store.fetchSessions(limit, offset, search)
         } catch (err: any) {
             const msg = err?.data?.message || 'Failed to load sessions.'
             error.value = msg
@@ -40,7 +40,7 @@ export const usePurchases = () => {
         clearError()
         try {
             await store.createSession(payload)
-           toast.success('Session created successfully')
+            toast.success('Session created successfully')
         } catch (err: any) {
             const msg = err?.data?.message || 'Failed to create session.'
             error.value = msg

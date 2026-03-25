@@ -28,6 +28,7 @@
           <tr class="border-b border-(--border)">
             <th class="text-left px-4 py-2.5 text-[11px] font-medium text-(--text-muted) uppercase tracking-wider w-8" />
             <th class="text-left px-4 py-2.5 text-[11px] font-medium text-(--text-muted) uppercase tracking-wider">Supplier</th>
+            <!-- <th class="text-left px-4 py-2.5 text-[11px] font-medium text-(--text-muted) uppercase tracking-wider">ProductName</th> -->
             <th class="text-left px-4 py-2.5 text-[11px] font-medium text-(--text-muted) uppercase tracking-wider">Date</th>
             <th class="text-left px-4 py-2.5 text-[11px] font-medium text-(--text-muted) uppercase tracking-wider hidden sm:table-cell">Payment</th>
             <th class="text-left px-4 py-2.5 text-[11px] font-medium text-(--text-muted) uppercase tracking-wider hidden md:table-cell">Items</th>
@@ -51,7 +52,38 @@
                   :class="expandedId === session.id ? 'rotate-180' : ''"
                 />
               </td>
+
               <td class="px-4 py-3 text-sm font-medium text-(--text-primary)">{{ session.supplier_name }}</td>
+            
+              
+              <!-- Supplier column using search -->
+              <!-- <td class="px-4 py-3 text-sm font-medium text-(--text-primary)">
+                <span v-if="!props.search">
+                  {{ session.supplier_name }}
+                </span>
+                <span v-else>
+                  {{
+                    session.product_items?.find(item =>
+                      item.name.toLowerCase().includes(props.search.toLowerCase())
+                    )?.name || session.supplier_name
+                  }}
+                </span>
+              </td> -->
+              
+            <!-- <td class="px-4 py-3 text-sm font-medium text-(--text-primary)">
+              <span v-if="!props.search">
+                {{ session.supplier_name }}
+              </span>
+              <span v-else>
+                {{
+                  session.product_items
+                    .filter(item => item.name.toLowerCase().includes(props.search.toLowerCase()))
+                    .map(item => item.name)
+                    .join(', ')
+                }}
+              </span>
+            </td> -->
+            
               <td class="px-4 py-3 text-sm text-(--text-muted)">{{ formatDate(session.purchase_date) }}</td>
               <td class="px-4 py-3 text-sm text-(--text-muted) hidden sm:table-cell capitalize">{{ session.payment_method }}</td>
               <td class="px-4 py-3 text-sm text-(--text-muted) hidden md:table-cell">{{ session.product_items?.length ?? 0 }} items</td>
@@ -126,9 +158,10 @@ import { ShoppingBag, ChevronDown, Pencil, Trash2 } from 'lucide-vue-next'
 import type { PurchaseSession } from '~/types'
 import dayjs from 'dayjs'
 
-defineProps<{
+const props = defineProps<{
   sessions: PurchaseSession[]
   loading?: boolean
+  search: string
 }>()
 
 const emit = defineEmits<{

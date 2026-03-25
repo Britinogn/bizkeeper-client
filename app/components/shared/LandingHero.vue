@@ -102,7 +102,7 @@
             <span class="flex-1 text-center text-[11px] text-(--text-muted) font-mono">app.bizkeeper.com/dashboard</span>
           </div>
 
-          <div class="flex min-h-[420px]">
+          <div class="flex min-h-105">
             
             <!-- Sidebar -->
             <div class="hidden md:flex flex-col w-44 border-r border-(--border) p-3 bg-(--surface)">

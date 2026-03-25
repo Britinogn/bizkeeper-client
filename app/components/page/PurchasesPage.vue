@@ -28,6 +28,7 @@
     <!-- Table / Skeleton -->
     <PurchasesPurchaseTable
       :sessions="filteredSessions"
+      :search="filters.search"
       :loading="loading"
       empty-message="No sessions found"
       @edit="openEdit"
@@ -119,9 +120,52 @@ const filteredSessions = computed(() => {
 
   // search filter
   if (filters.value.search) {
-    const q = filters.value.search.toLowerCase()
-    result = result.filter(s => s.supplier_name.toLowerCase().includes(q))
+    const q = filters.value.search.toLowerCase().trim()
+
+    result = result.filter((s) => {
+      // Search in supplier name
+      if (s.supplier_name.toLowerCase().includes(q)) return true
+
+      // Search in any product name inside the session
+      return s.product_items?.some((item: any) =>
+        item.name?.toLowerCase().includes(q)
+      )
+    })
   }
+
+  // if (filters.value.search) {
+  //   const q = filters.value.search.toLowerCase().trim()
+  //   result = result.filter((s) => {
+  //     if (s.supplier_name.toLowerCase().includes(q)) return true
+  //     return s.product_items?.some((item: any) =>
+  //       item.name?.toLowerCase().includes(q)
+  //     )
+  //   })
+  // }
+
+  /*
+  const q = filters.value.search?.toLowerCase().trim()
+  return sessions.value
+    .map((s) => {
+      if (!q) return s // no search, keep entire session
+
+      // Check if supplier matches
+      const supplierMatch = s.supplier_name.toLowerCase().includes(q)
+
+      // Filter products that match the search
+      const matchingProducts = s.product_items?.filter((item) =>
+        item.name.toLowerCase().includes(q)
+      ) || []
+
+      // If nothing matches, skip this session
+      if (!supplierMatch && matchingProducts.length === 0) return null
+
+      // Return a session object with filtered products
+      return { ...s, product_items: supplierMatch ? s.product_items : matchingProducts }
+    })
+    .filter(Boolean) as PurchaseSession[]
+
+    */
 
   // payment method filter
   if (filters.value.payment_method) {
@@ -140,7 +184,18 @@ const filteredSessions = computed(() => {
 })
 
 // reset pagination when filters change
-watch(filters, () => { offset.value = 0 })
+// watch(filters, () => { offset.value = 0 })
+
+// Watch search specifically and call the API
+watch(() => filters.value.search, (search) => {
+  offset.value = 0
+  fetchSessions(limit, 0, search)
+})
+
+// Keep the existing watch for pagination reset on other filters
+watch(() => [filters.value.payment_method, filters.value.date_from, filters.value.date_to], () => {
+  offset.value = 0
+})
 
 function clearFilters() {
   filters.value = { search: '', payment_method: '', date_from: '', date_to: '' }
@@ -186,7 +241,7 @@ async function handleSubmit(payload: any) {
       await createSession(payload)
     }
     closeModal()
-    await fetchSessions(limit, offset.value)
+    await fetchSessions(limit, offset.value, filters.value.search)
   } finally {
     submitting.value = false
   }
@@ -198,7 +253,7 @@ async function handleDelete() {
   try {
     await deleteSession(selectedSession.value.id)
     closeDeleteModal()
-    await fetchSessions(limit, offset.value)
+    await fetchSessions(limit, offset.value, filters.value.search)
   } finally {
     deleting.value = false
   }
@@ -207,12 +262,12 @@ async function handleDelete() {
 async function nextPage() {
   if (!hasMore.value) return
   offset.value += limit
-  await fetchSessions(limit, offset.value)
+  await fetchSessions(limit, offset.value, filters.value.search)
 }
 
 async function prevPage() {
   offset.value = Math.max(0, offset.value - limit)
-  await fetchSessions(limit, offset.value)
+  await fetchSessions(limit, offset.value, filters.value.search)
 }
 
 // initial fetch

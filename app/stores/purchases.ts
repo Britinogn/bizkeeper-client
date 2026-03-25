@@ -9,12 +9,26 @@ export const usePurchasesStore = defineStore('purchases', () => {
   const loading = ref(false)
 
   // fetch paginated sessions
-  const fetchSessions = async (limit = 10, offset = 0) => {
+  const fetchSessions = async (
+    limit = 10,
+    offset = 0,
+    search = '',
+    payment_method = '',
+    date_from = '',
+    date_to = ''
+  ) => {
     loading.value = true
     try {
       const response = await $fetch<ApiResponse<PaginatedSessions>>('/purchases', {
         ...apiClient(),
-        params: { limit, offset },
+        params: { 
+          limit, 
+          offset, 
+          search, 
+          payment_method, 
+          date_from, 
+          date_to 
+        },
       })
       sessions.value = response.data.sessions
       meta.value = response.data.meta
