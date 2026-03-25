@@ -30,14 +30,17 @@
                 class="h-9 px-3 rounded-lg border border-(--border) bg-(--background) text-sm text-(--text-primary) placeholder:text-(--text-muted) focus:outline-none focus:border-(--primary-hover) transition-colors"
               />
             </div>
+
             <div class="flex flex-col gap-1.5">
               <label class="text-xs font-medium text-(--text-muted)">Purchase Date <span class="text-red-400">*</span></label>
               <input
                 v-model="form.purchase_date"
                 type="date"
-                class="h-9 px-3 rounded-lg border border-(--border) bg-(--background) text-sm text-(--text-primary) focus:outline-none focus:border-(--primary-hover) transition-colors"
+                class="h-9 px-3 rounded-lg border border-(--border) bg-(--background) text-sm text-(--text-primary) focus:outline-none focus:border-(--primary-hover) transition-colors appearance-none"
+                style="color-scheme: dark; min-height: 36px;"
               />
             </div>
+
             <div class="flex flex-col gap-1.5">
               <label class="text-xs font-medium text-(--text-muted)">Payment Method <span class="text-red-400">*</span></label>
               <select
@@ -50,8 +53,9 @@
                 <option value="credit">Credit</option>
               </select>
             </div>
+
             <div class="flex flex-col gap-1.5">
-              <label class="text-xs font-medium text-(--text-muted)">Invoice Reference</label>
+              <label class="text-xs font-medium text-(--text-muted)">Invoice Reference (optional)</label>
               <input
                 v-model="form.invoice_reference"
                 type="text"
@@ -59,6 +63,7 @@
                 class="h-9 px-3 rounded-lg border border-(--border) bg-(--background) text-sm text-(--text-primary) placeholder:text-(--text-muted) focus:outline-none focus:border-(--primary-hover) transition-colors"
               />
             </div>
+
             <div class="flex flex-col gap-1.5 sm:col-span-2">
               <label class="text-xs font-medium text-(--text-muted)">Notes</label>
               <textarea
@@ -98,15 +103,18 @@
                     class="w-full h-9 px-3 rounded-lg border border-(--border) bg-(--background) text-sm text-(--text-primary) placeholder:text-(--text-muted) focus:outline-none focus:border-(--primary-hover) transition-colors"
                   />
                 </div>
-                <!-- Category -->
+
+                <!-- Category: auto-lowercased on input -->
                 <div class="col-span-6 sm:col-span-2">
                   <input
-                    v-model="item.category"
+                    :value="item.category"
+                    @input="item.category = ($event.target as HTMLInputElement).value.toLowerCase()"
                     type="text"
-                    placeholder="Category"
+                    placeholder="category"
                     class="w-full h-9 px-3 rounded-lg border border-(--border) bg-(--background) text-sm text-(--text-primary) placeholder:text-(--text-muted) focus:outline-none focus:border-(--primary-hover) transition-colors"
                   />
                 </div>
+
                 <!-- Quantity -->
                 <div class="col-span-3 sm:col-span-2">
                   <input
@@ -117,6 +125,7 @@
                     class="w-full h-9 px-3 rounded-lg border border-(--border) bg-(--background) text-sm text-(--text-primary) placeholder:text-(--text-muted) focus:outline-none focus:border-(--primary-hover) transition-colors"
                   />
                 </div>
+
                 <!-- Unit price -->
                 <div class="col-span-3 sm:col-span-2">
                   <input
@@ -127,18 +136,20 @@
                     class="w-full h-9 px-3 rounded-lg border border-(--border) bg-(--background) text-sm text-(--text-primary) placeholder:text-(--text-muted) focus:outline-none focus:border-(--primary-hover) transition-colors"
                   />
                 </div>
+
                 <!-- Subtotal -->
                 <div class="col-span-10 sm:col-span-1 flex items-center">
                   <span class="text-xs font-mono text-blue-500">
                     ₦{{ ((item.quantity || 0) * (item.unit_price || 0)).toLocaleString() }}
                   </span>
                 </div>
+
                 <!-- Remove -->
                 <div class="col-span-2 sm:col-span-1 flex items-center justify-end">
                   <button
-                    class="w-7 h-7 flex items-center justify-center rounded-lg hover:bg-red-500/10 text-(--text-muted) hover:text-red-400 transition-colors"
-                    @click="removeItem(index)"
+                    class="w-7 h-7 flex items-center justify-center rounded-lg hover:bg-red-500/10 text-(--text-muted) hover:text-red-400 transition-colors disabled:opacity-30"
                     :disabled="form.items.length === 1"
+                    @click="removeItem(index)"
                   >
                     <Trash2 :size="13" />
                   </button>
@@ -178,6 +189,7 @@
 </template>
 
 <script setup lang="ts">
+import { computed, reactive, watch } from 'vue'
 import { X, Plus, Trash2 } from 'lucide-vue-next'
 import type { PurchaseSession } from '~/types'
 import dayjs from 'dayjs'
@@ -211,7 +223,7 @@ const form = reactive({
   items: [defaultItem()],
 })
 
-// populate form if editing
+// Populate form when editing
 watch(() => props.session, (session) => {
   if (session) {
     form.supplier_name = session.supplier_name
@@ -221,7 +233,7 @@ watch(() => props.session, (session) => {
     form.notes = session.notes ?? ''
     form.items = session.product_items.map(i => ({
       name: i.name,
-      category: i.category,
+      category: i.category.toLowerCase(), // normalize on load too
       quantity: i.quantity,
       unit_price: i.unit_price,
       notes: i.notes ?? '',
@@ -260,3 +272,31 @@ function handleSubmit() {
   })
 }
 </script>
+
+<style scoped>
+input[type="date"] {
+  color: var(--text-primary);
+  background-color: var(--background);
+}
+input[type="date"]::-webkit-datetime-edit {
+  color: var(--text-primary);
+  padding: 0;
+}
+input[type="date"]::-webkit-datetime-edit-fields-wrapper {
+  color: var(--text-primary);
+}
+input[type="date"]::-webkit-datetime-edit-text {
+  color: var(--text-muted);
+  padding: 0 2px;
+}
+input[type="date"]::-webkit-datetime-edit-month-field,
+input[type="date"]::-webkit-datetime-edit-day-field,
+input[type="date"]::-webkit-datetime-edit-year-field {
+  color: var(--text-primary);
+}
+input[type="date"]::-webkit-calendar-picker-indicator {
+  opacity: 0.5;
+  filter: invert(1);
+  cursor: pointer;
+}
+</style>
