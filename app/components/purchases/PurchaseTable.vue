@@ -27,8 +27,23 @@
         <thead>
           <tr class="border-b border-(--border)">
             <th class="text-left px-4 py-2.5 text-[11px] font-medium text-(--text-muted) uppercase tracking-wider w-8" />
-            <th class="text-left px-4 py-2.5 text-[11px] font-medium text-(--text-muted) uppercase tracking-wider">Supplier</th>
-            <!-- <th class="text-left px-4 py-2.5 text-[11px] font-medium text-(--text-muted) uppercase tracking-wider">ProductName</th> -->
+
+            <!-- Supplier column: default / supplier search -->
+            <th
+              v-if="!isProductSearch"
+              class="text-left px-4 py-2.5 text-[11px] font-medium text-(--text-muted) uppercase tracking-wider"
+            >
+              Supplier
+            </th>
+
+            <!-- Product column: product search only -->
+            <th
+              v-if="isProductSearch"
+              class="text-left px-4 py-2.5 text-[11px] font-medium text-(--text-muted) uppercase tracking-wider"
+            >
+              Product Name
+            </th>
+
             <th class="text-left px-4 py-2.5 text-[11px] font-medium text-(--text-muted) uppercase tracking-wider">Date</th>
             <th class="text-left px-4 py-2.5 text-[11px] font-medium text-(--text-muted) uppercase tracking-wider hidden sm:table-cell">Payment</th>
             <th class="text-left px-4 py-2.5 text-[11px] font-medium text-(--text-muted) uppercase tracking-wider hidden md:table-cell">Items</th>
@@ -37,115 +52,185 @@
           </tr>
         </thead>
         <tbody>
-          <template v-for="session in sessions" :key="session.id">
 
-            <!-- Session row -->
-            <tr
-              class="border-b border-(--border) hover:bg-(--background) transition-colors cursor-pointer"
-              :class="expandedId === session.id ? 'bg-(--background)' : ''"
-              @click="toggleExpand(session.id)"
-            >
-              <td class="px-4 py-3">
-                <ChevronDown
-                  :size="14"
-                  class="text-(--text-muted) transition-transform duration-200"
-                  :class="expandedId === session.id ? 'rotate-180' : ''"
-                />
-              </td>
+          <!-- ── DEFAULT / SUPPLIER SEARCH: one row per session ── -->
+          <template v-if="!isProductSearch">
+            <template v-for="session in sessions" :key="session.id">
 
-              <td class="px-4 py-3 text-sm font-medium text-(--text-primary)">{{ session.supplier_name }}</td>
-            
-              
-              <!-- Supplier column using search -->
-              <!-- <td class="px-4 py-3 text-sm font-medium text-(--text-primary)">
-                <span v-if="!props.search">
-                  {{ session.supplier_name }}
-                </span>
-                <span v-else>
-                  {{
-                    session.product_items?.find(item =>
-                      item.name.toLowerCase().includes(props.search.toLowerCase())
-                    )?.name || session.supplier_name
-                  }}
-                </span>
-              </td> -->
-              
-            <!-- <td class="px-4 py-3 text-sm font-medium text-(--text-primary)">
-              <span v-if="!props.search">
-                {{ session.supplier_name }}
-              </span>
-              <span v-else>
-                {{
-                  session.product_items
-                    .filter(item => item.name.toLowerCase().includes(props.search.toLowerCase()))
-                    .map(item => item.name)
-                    .join(', ')
-                }}
-              </span>
-            </td> -->
-            
-              <td class="px-4 py-3 text-sm text-(--text-muted)">{{ formatDate(session.purchase_date) }}</td>
-              <td class="px-4 py-3 text-sm text-(--text-muted) hidden sm:table-cell capitalize">{{ session.payment_method }}</td>
-              <td class="px-4 py-3 text-sm text-(--text-muted) hidden md:table-cell">{{ session.product_items?.length ?? 0 }} items</td>
-              <td class="px-4 py-3 text-sm font-semibold text-right text-blue-500 font-mono">
-                ₦{{ session.total_amount.toLocaleString() }}
-              </td>
-              <td class="px-4 py-3 text-right" @click.stop>
-                <div class="flex items-center justify-end gap-1">
-                  <button
-                    class="w-7 h-7 flex items-center justify-center rounded-lg hover:bg-blue-500/10 text-(--text-muted) hover:text-blue-400 transition-colors"
-                    @click="emit('edit', session)"
-                  >
-                    <Pencil :size="13" />
-                  </button>
-                  <button
-                    class="w-7 h-7 flex items-center justify-center rounded-lg hover:bg-red-500/10 text-(--text-muted) hover:text-red-400 transition-colors"
-                    @click="emit('delete', session)"
-                  >
-                    <Trash2 :size="13" />
-                  </button>
-                </div>
-              </td>
-            </tr>
+              <tr
+                class="border-b border-(--border) hover:bg-(--background) transition-colors cursor-pointer"
+                :class="expandedId === session.id ? 'bg-(--background)' : ''"
+                @click="toggleExpand(session.id)"
+              >
+                <td class="px-4 py-3">
+                  <ChevronDown
+                    :size="14"
+                    class="text-(--text-muted) transition-transform duration-200"
+                    :class="expandedId === session.id ? 'rotate-180' : ''"
+                  />
+                </td>
+                <td class="px-4 py-3 text-sm font-medium text-(--text-primary)">{{ session.supplier_name }}</td>
+                <td class="px-4 py-3 text-sm text-(--text-muted)">{{ formatDate(session.purchase_date) }}</td>
+                <td class="px-4 py-3 text-sm text-(--text-muted) hidden sm:table-cell capitalize">{{ session.payment_method }}</td>
+                <td class="px-4 py-3 text-sm text-(--text-muted) hidden md:table-cell">{{ session.product_items?.length ?? 0 }} items</td>
+                <td class="px-4 py-3 text-sm font-semibold text-right text-blue-500 font-mono">
+                  ₦{{ session.total_amount.toLocaleString() }}
+                </td>
+                <td class="px-4 py-3 text-right" @click.stop>
+                  <div class="flex items-center justify-end gap-1">
+                    <button
+                      class="w-7 h-7 flex items-center justify-center rounded-lg hover:bg-blue-500/10 text-(--text-muted) hover:text-blue-400 transition-colors"
+                      @click="emit('edit', session)"
+                    >
+                      <Pencil :size="13" />
+                    </button>
+                    <button
+                      class="w-7 h-7 flex items-center justify-center rounded-lg hover:bg-red-500/10 text-(--text-muted) hover:text-red-400 transition-colors"
+                      @click="emit('delete', session)"
+                    >
+                      <Trash2 :size="13" />
+                    </button>
+                  </div>
+                </td>
+              </tr>
 
-            <!-- Expanded product items -->
-            <tr v-if="expandedId === session.id" class="border-b border-(--border)">
-              <td colspan="7" class="px-4 py-3 bg-(--background)">
-                <div class="rounded-lg border border-(--border) overflow-hidden">
-                  <table class="w-full">
-                    <thead>
-                      <tr class="border-b border-(--border)">
-                        <th class="text-left px-3 py-2 text-[10px] font-medium text-(--text-muted) uppercase tracking-wider">Product</th>
-                        <th class="text-left px-3 py-2 text-[10px] font-medium text-(--text-muted) uppercase tracking-wider hidden sm:table-cell">Category</th>
-                        <th class="text-right px-3 py-2 text-[10px] font-medium text-(--text-muted) uppercase tracking-wider">Qty</th>
-                        <th class="text-right px-3 py-2 text-[10px] font-medium text-(--text-muted) uppercase tracking-wider">Unit Price</th>
-                        <th class="text-right px-3 py-2 text-[10px] font-medium text-(--text-muted) uppercase tracking-wider">Subtotal</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr
-                        v-for="item in session.product_items"
-                        :key="item.id"
-                        class="border-b border-(--border) last:border-0"
-                      >
-                        <td class="px-3 py-2 text-xs font-medium text-(--text-primary)">{{ item.name }}</td>
-                        <td class="px-3 py-2 text-xs text-(--text-muted) hidden sm:table-cell">{{ item.category }}</td>
-                        <td class="px-3 py-2 text-xs text-(--text-muted) text-right">{{ item.quantity }}</td>
-                        <td class="px-3 py-2 text-xs text-(--text-muted) text-right font-mono">₦{{ item.unit_price.toLocaleString() }}</td>
-                        <td class="px-3 py-2 text-xs font-semibold text-right text-blue-500 font-mono">₦{{ item.subtotal_amount.toLocaleString() }}</td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
+              <!-- Expanded product items -->
+              <tr v-if="expandedId === session.id" class="border-b border-(--border)">
+                <td colspan="7" class="px-4 py-3 bg-(--background)">
+                  <div class="rounded-lg border border-(--border) overflow-hidden">
+                    <table class="w-full">
+                      <thead>
+                        <tr class="border-b border-(--border)">
+                          <th class="text-left px-3 py-2 text-[10px] font-medium text-(--text-muted) uppercase tracking-wider">Product</th>
+                          <th class="text-left px-3 py-2 text-[10px] font-medium text-(--text-muted) uppercase tracking-wider hidden sm:table-cell">Category</th>
+                          <th class="text-right px-3 py-2 text-[10px] font-medium text-(--text-muted) uppercase tracking-wider">Qty</th>
+                          <th class="text-right px-3 py-2 text-[10px] font-medium text-(--text-muted) uppercase tracking-wider">Unit Price</th>
+                          <th class="text-right px-3 py-2 text-[10px] font-medium text-(--text-muted) uppercase tracking-wider">Subtotal</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr
+                          v-for="item in session.product_items"
+                          :key="item.id"
+                          class="border-b border-(--border) last:border-0"
+                        >
+                          <td class="px-3 py-2 text-xs font-medium text-(--text-primary)">{{ item.name }}</td>
+                          <td class="px-3 py-2 text-xs text-(--text-muted) hidden sm:table-cell">{{ item.category }}</td>
+                          <td class="px-3 py-2 text-xs text-(--text-muted) text-right">{{ item.quantity }}</td>
+                          <td class="px-3 py-2 text-xs text-(--text-muted) text-right font-mono">₦{{ item.unit_price.toLocaleString() }}</td>
+                          <td class="px-3 py-2 text-xs font-semibold text-right text-blue-500 font-mono">₦{{ item.subtotal_amount.toLocaleString() }}</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                  <p v-if="session.notes" class="text-xs text-(--text-muted) mt-2 px-1">
+                    <span class="font-medium text-(--text-primary)">Notes:</span> {{ session.notes }}
+                  </p>
+                </td>
+              </tr>
 
-                <!-- Session notes -->
-                <p v-if="session.notes" class="text-xs text-(--text-muted) mt-2 px-1">
-                  <span class="font-medium text-(--text-primary)">Notes:</span> {{ session.notes }}
-                </p>
-              </td>
-            </tr>
-
+            </template>
           </template>
+
+          <!-- ── PRODUCT SEARCH: one row per matched product item ── -->
+          <template v-else>
+            <template v-for="session in sessions" :key="session.id">
+              <tr
+                v-for="(item, index) in matchingItems(session)"
+                :key="item.id"
+                class="border-b border-(--border) hover:bg-(--background) transition-colors"
+              >
+                <!-- Chevron: only on first item row of each session, opens expanded view -->
+                <td class="px-4 py-3">
+                  <ChevronDown
+                    v-if="index === 0"
+                    :size="14"
+                    class="text-(--text-muted) transition-transform duration-200 cursor-pointer"
+                    :class="expandedId === session.id ? 'rotate-180' : ''"
+                    @click="toggleExpand(session.id)"
+                  />
+                </td>
+
+                <!-- Product name -->
+                <td class="px-4 py-3 text-sm font-medium text-(--text-primary)">{{ item.name }}</td>
+
+                <!-- Date: only on first item row of each session -->
+                <td class="px-4 py-3 text-sm text-(--text-muted)">
+                  <span v-if="index === 0">{{ formatDate(session.purchase_date) }}</span>
+                </td>
+
+                <!-- Payment: only on first item row -->
+                <td class="px-4 py-3 text-sm text-(--text-muted) hidden sm:table-cell capitalize">
+                  <span v-if="index === 0">{{ session.payment_method }}</span>
+                </td>
+
+                <!-- Items count: only on first item row -->
+                <td class="px-4 py-3 text-sm text-(--text-muted) hidden md:table-cell">
+                  <span v-if="index === 0">{{ session.product_items?.length ?? 0 }} items</span>
+                </td>
+
+                <!-- Subtotal for this specific product -->
+                <td class="px-4 py-3 text-sm font-semibold text-right text-blue-500 font-mono">
+                  ₦{{ item.subtotal_amount.toLocaleString() }}
+                </td>
+
+                <!-- Actions: only on first item row -->
+                <td class="px-4 py-3 text-right" @click.stop>
+                  <div v-if="index === 0" class="flex items-center justify-end gap-1">
+                    <button
+                      class="w-7 h-7 flex items-center justify-center rounded-lg hover:bg-blue-500/10 text-(--text-muted) hover:text-blue-400 transition-colors"
+                      @click="emit('edit', session)"
+                    >
+                      <Pencil :size="13" />
+                    </button>
+                    <button
+                      class="w-7 h-7 flex items-center justify-center rounded-lg hover:bg-red-500/10 text-(--text-muted) hover:text-red-400 transition-colors"
+                      @click="emit('delete', session)"
+                    >
+                      <Trash2 :size="13" />
+                    </button>
+                  </div>
+                </td>
+              </tr>
+
+              <!-- Expanded product items (still available in product search mode) -->
+              <tr v-if="expandedId === session.id" class="border-b border-(--border)">
+                <td colspan="7" class="px-4 py-3 bg-(--background)">
+                  <div class="rounded-lg border border-(--border) overflow-hidden">
+                    <table class="w-full">
+                      <thead>
+                        <tr class="border-b border-(--border)">
+                          <th class="text-left px-3 py-2 text-[10px] font-medium text-(--text-muted) uppercase tracking-wider">Product</th>
+                          <th class="text-left px-3 py-2 text-[10px] font-medium text-(--text-muted) uppercase tracking-wider hidden sm:table-cell">Category</th>
+                          <th class="text-right px-3 py-2 text-[10px] font-medium text-(--text-muted) uppercase tracking-wider">Qty</th>
+                          <th class="text-right px-3 py-2 text-[10px] font-medium text-(--text-muted) uppercase tracking-wider">Unit Price</th>
+                          <th class="text-right px-3 py-2 text-[10px] font-medium text-(--text-muted) uppercase tracking-wider">Subtotal</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr
+                          v-for="item in session.product_items"
+                          :key="item.id"
+                          class="border-b border-(--border) last:border-0"
+                        >
+                          <td class="px-3 py-2 text-xs font-medium text-(--text-primary)">{{ item.name }}</td>
+                          <td class="px-3 py-2 text-xs text-(--text-muted) hidden sm:table-cell">{{ item.category }}</td>
+                          <td class="px-3 py-2 text-xs text-(--text-muted) text-right">{{ item.quantity }}</td>
+                          <td class="px-3 py-2 text-xs text-(--text-muted) text-right font-mono">₦{{ item.unit_price.toLocaleString() }}</td>
+                          <td class="px-3 py-2 text-xs font-semibold text-right text-blue-500 font-mono">₦{{ item.subtotal_amount.toLocaleString() }}</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                  <p v-if="session.notes" class="text-xs text-(--text-muted) mt-2 px-1">
+                    <span class="font-medium text-(--text-primary)">Notes:</span> {{ session.notes }}
+                  </p>
+                </td>
+              </tr>
+
+            </template>
+          </template>
+
         </tbody>
       </table>
     </div>
@@ -154,6 +239,7 @@
 </template>
 
 <script setup lang="ts">
+import { ref, computed } from 'vue'
 import { ShoppingBag, ChevronDown, Pencil, Trash2 } from 'lucide-vue-next'
 import type { PurchaseSession } from '~/types'
 import dayjs from 'dayjs'
@@ -177,5 +263,25 @@ function toggleExpand(id: string) {
 
 function formatDate(date: string) {
   return dayjs(date).format('MMM D, YYYY')
+}
+
+// True when the search term matches a product name (not a supplier)
+const isProductSearch = computed(() => {
+  if (!props.search) return false
+  const query = props.search.toLowerCase()
+  return props.sessions.some(session =>
+    session.product_items?.some(item =>
+      item.name.toLowerCase().includes(query)
+    )
+  )
+})
+
+// Returns only the product items that match the search
+function matchingItems(session: PurchaseSession) {
+  if (!props.search) return []
+  const query = props.search.toLowerCase()
+  return session.product_items?.filter(item =>
+    item.name.toLowerCase().includes(query)
+  ) ?? []
 }
 </script>
