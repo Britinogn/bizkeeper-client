@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col gap-5">
+  <div class="flex flex-col gap-5 px-4 sm:px-6 py-4 sm:py-6 max-w-screen-xl mx-auto">
 
     <!-- Header -->
     <div class="flex items-center justify-between">
@@ -8,20 +8,21 @@
         <p class="text-xs text-(--text-muted) mt-0.5">{{ meta?.total ?? 0 }} total sessions</p>
       </div>
       <button
-        class="h-9 px-4 rounded-lg text-sm font-medium text-white bg-blue-600 hover:bg-blue-500 transition-colors flex items-center gap-2 disabled:opacity-50"
+        class="h-9 px-4 rounded-lg text-sm font-medium text-white bg-blue-600 hover:bg-blue-500 transition-colors flex items-center gap-2 disabled:opacity-50 shrink-0"
         :disabled="submitting"
         @click="openCreate"
         aria-label="Create new purchase session"
       >
         <Plus :size="15" />
-        New Session
+        <span class="hidden xs:inline">New Session</span>
+        <span class="xs:hidden">New</span>
       </button>
     </div>
 
     <!-- Filters -->
     <PurchasesPurchaseFilters
       :filters="filters"
-      @update:filters="filters = $event"
+      @update:filters="onFiltersUpdate"
       @clear="clearFilters"
     />
 
@@ -36,7 +37,7 @@
     />
 
     <!-- Pagination -->
-    <div v-if="meta && meta.total > limit" class="flex items-center justify-between">
+    <div v-if="meta && meta.total > limit" class="flex items-center justify-between flex-wrap gap-2">
       <p class="text-xs text-(--text-muted)">
         Showing {{ offset + 1 }}–{{ Math.min(offset + limit, meta.total) }} of {{ meta.total }}
       </p>
@@ -92,21 +93,21 @@ import type { PurchaseFiltersState } from '~/components/purchases/PurchaseFilter
 const store = usePurchasesStore()
 const { fetchSessions, createSession, updateSession, deleteSession } = usePurchases()
 
-// Pagination
+// ── Pagination ──────────────────────────────────────────────
 const limit = 10
 const offset = ref(0)
 const currentPage = computed(() => Math.floor(offset.value / limit) + 1)
 const totalPages = computed(() => Math.ceil((meta.value?.total ?? 0) / limit))
 const hasMore = computed(() => (offset.value + limit) < (meta.value?.total ?? 0))
 
-// State
+// ── State ────────────────────────────────────────────────────
 const loading = computed(() => store.loading)
 const submitting = ref(false)
 const deleting = ref(false)
 const sessions = computed(() => store.sessions)
 const meta = computed(() => store.meta)
 
-// Filters
+// ── Filters ──────────────────────────────────────────────────
 const filters = ref<PurchaseFiltersState>({
   search: '',
   payment_method: '',
@@ -114,94 +115,48 @@ const filters = ref<PurchaseFiltersState>({
   date_to: '',
 })
 
-// Filtered sessions
+// When any filter changes: reset pagination and re-fetch from server
+function onFiltersUpdate(newFilters: PurchaseFiltersState) {
+  filters.value = newFilters
+  offset.value = 0
+  fetchSessions(limit, 0, filters.value.search)
+}
+
+function clearFilters() {
+  filters.value = { search: '', payment_method: '', date_from: '', date_to: '' }
+  offset.value = 0
+  fetchSessions(limit, 0)
+}
+
+// ── Client-side filtering (payment + date on current page) ───
+// Note: search is handled server-side via fetchSessions.
+// Payment and date filters are applied client-side on the returned page.
 const filteredSessions = computed(() => {
   let result = sessions.value
 
-  // search filter
-  if (filters.value.search) {
-    const q = filters.value.search.toLowerCase().trim()
-
-    result = result.filter((s) => {
-      // Search in supplier name
-      if (s.supplier_name.toLowerCase().includes(q)) return true
-
-      // Search in any product name inside the session
-      return s.product_items?.some((item: any) =>
-        item.name?.toLowerCase().includes(q)
-      )
-    })
-  }
-
-  // if (filters.value.search) {
-  //   const q = filters.value.search.toLowerCase().trim()
-  //   result = result.filter((s) => {
-  //     if (s.supplier_name.toLowerCase().includes(q)) return true
-  //     return s.product_items?.some((item: any) =>
-  //       item.name?.toLowerCase().includes(q)
-  //     )
-  //   })
-  // }
-
-  /*
-  const q = filters.value.search?.toLowerCase().trim()
-  return sessions.value
-    .map((s) => {
-      if (!q) return s // no search, keep entire session
-
-      // Check if supplier matches
-      const supplierMatch = s.supplier_name.toLowerCase().includes(q)
-
-      // Filter products that match the search
-      const matchingProducts = s.product_items?.filter((item) =>
-        item.name.toLowerCase().includes(q)
-      ) || []
-
-      // If nothing matches, skip this session
-      if (!supplierMatch && matchingProducts.length === 0) return null
-
-      // Return a session object with filtered products
-      return { ...s, product_items: supplierMatch ? s.product_items : matchingProducts }
-    })
-    .filter(Boolean) as PurchaseSession[]
-
-    */
-
-  // payment method filter
+  // Payment method
   if (filters.value.payment_method) {
     result = result.filter(s => s.payment_method === filters.value.payment_method)
   }
 
-  // date filters
+  // Date from
   if (filters.value.date_from) {
-    result = result.filter(s => dayjs(s.purchase_date).isAfter(dayjs(filters.value.date_from).subtract(1, 'day')))
+    result = result.filter(s =>
+      dayjs(s.purchase_date).isAfter(dayjs(filters.value.date_from).subtract(1, 'day'))
+    )
   }
+
+  // Date to
   if (filters.value.date_to) {
-    result = result.filter(s => dayjs(s.purchase_date).isBefore(dayjs(filters.value.date_to).add(1, 'day')))
+    result = result.filter(s =>
+      dayjs(s.purchase_date).isBefore(dayjs(filters.value.date_to).add(1, 'day'))
+    )
   }
 
   return result
 })
 
-// reset pagination when filters change
-// watch(filters, () => { offset.value = 0 })
-
-// Watch search specifically and call the API
-watch(() => filters.value.search, (search) => {
-  offset.value = 0
-  fetchSessions(limit, 0, search)
-})
-
-// Keep the existing watch for pagination reset on other filters
-watch(() => [filters.value.payment_method, filters.value.date_from, filters.value.date_to], () => {
-  offset.value = 0
-})
-
-function clearFilters() {
-  filters.value = { search: '', payment_method: '', date_from: '', date_to: '' }
-}
-
-// Modals
+// ── Modals ───────────────────────────────────────────────────
 const showModal = ref(false)
 const showDeleteModal = ref(false)
 const selectedSession = ref<PurchaseSession | null>(null)
@@ -231,7 +186,7 @@ function closeDeleteModal() {
   selectedSession.value = null
 }
 
-// Actions
+// ── Actions ──────────────────────────────────────────────────
 async function handleSubmit(payload: any) {
   submitting.value = true
   try {
@@ -270,6 +225,6 @@ async function prevPage() {
   await fetchSessions(limit, offset.value, filters.value.search)
 }
 
-// initial fetch
+// ── Init ─────────────────────────────────────────────────────
 onMounted(() => fetchSessions(limit, 0))
 </script>

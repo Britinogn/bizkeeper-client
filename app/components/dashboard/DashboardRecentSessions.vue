@@ -1,15 +1,19 @@
 <template>
-  <div class="rounded-xl border border-(--border) bg-(--surface) overflow-hidden"
+  <div
+    class="rounded-xl border border-(--border) bg-(--surface) overflow-hidden"
     role="region"
     aria-label="Recent purchase sessions"
   >
+
+    <!-- Header -->
     <div class="flex items-center justify-between px-4 py-3 border-b border-(--border)">
       <p class="text-sm font-semibold text-(--text-primary)">Recent Sessions</p>
-      <NuxtLink to="/dashboard/purchases" 
-          class="text-xs text-blue-500 hover:text-blue-400 transition-colors" 
-          aria-label="View all sessions"
-        >
-          View all
+      <NuxtLink
+        to="/dashboard/purchases"
+        class="text-xs text-blue-500 hover:text-blue-400 transition-colors"
+        aria-label="View all purchase sessions"
+      >
+        View all
       </NuxtLink>
     </div>
 
@@ -27,20 +31,18 @@
           <div class="h-3 w-16 rounded bg-(--border) hidden sm:block" />
           <div class="h-3 w-16 rounded bg-(--border)" />
         </div>
-        <span class="sr-only">Loading recent sessions</span>
       </div>
+      <span class="sr-only">Loading recent sessions</span>
     </template>
-
-    
 
     <!-- Empty -->
     <div v-else-if="!sessions.length" class="px-4 py-8 text-center text-sm text-(--text-muted)">
-      <p class="px-4 py-8 text-center text-sm text-(--text-muted)">No sessions yet</p>
+      No sessions yet
     </div>
 
     <!-- Table -->
     <div v-else class="overflow-x-auto">
-      <table class="w-full" aria-label="Recent purchase sessions">
+      <table class="w-full">
         <thead>
           <tr class="border-b border-(--border)">
             <th scope="col" class="text-left px-4 py-2.5 text-[11px] font-medium text-(--text-muted) uppercase tracking-wider">Supplier</th>
@@ -68,6 +70,7 @@
 </template>
 
 <script setup lang="ts">
+import { computed } from 'vue'
 import dayjs from 'dayjs'
 
 const store = useDashboardStore()

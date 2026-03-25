@@ -16,7 +16,7 @@
           class="flex items-center gap-4 px-4 py-3 animate-pulse"
         >
           <div class="h-3 flex-1 rounded bg-(--border)" />
-          <div class="h-3 w-20 rounded bg-(--border)" />
+          <div class="h-3 w-20 rounded bg-(--border) hidden sm:block" />
           <div class="h-3 w-20 rounded bg-(--border)" />
           <div class="h-5 w-16 rounded-md bg-(--border)" />
         </div>
@@ -35,7 +35,8 @@
         <thead>
           <tr class="border-b border-(--border)">
             <th scope="col" class="text-left px-4 py-2.5 text-[11px] font-medium text-(--text-muted) uppercase tracking-wider">Product</th>
-            <th scope="col" class="text-right px-4 py-2.5 text-[11px] font-medium text-(--text-muted) uppercase tracking-wider">Previous</th>
+            <!-- Previous hidden on mobile — Latest + Change tells the full story -->
+            <th scope="col" class="text-right px-4 py-2.5 text-[11px] font-medium text-(--text-muted) uppercase tracking-wider hidden sm:table-cell">Previous</th>
             <th scope="col" class="text-right px-4 py-2.5 text-[11px] font-medium text-(--text-muted) uppercase tracking-wider">Latest</th>
             <th scope="col" class="text-right px-4 py-2.5 text-[11px] font-medium text-(--text-muted) uppercase tracking-wider">Change</th>
           </tr>
@@ -47,18 +48,26 @@
             class="border-b border-(--border) last:border-0 hover:bg-(--background) transition-colors"
           >
             <td class="px-4 py-3 text-sm font-medium text-(--text-primary)">{{ item.product }}</td>
-            <td class="px-4 py-3 text-sm text-(--text-muted) text-right font-mono">₦{{ item.previous_price.toLocaleString() }}</td>
-            <td class="px-4 py-3 text-sm text-(--text-primary) text-right font-mono">₦{{ item.latest_price.toLocaleString() }}</td>
+
+            <!-- Previous price: hidden on mobile -->
+            <td class="px-4 py-3 text-sm text-(--text-muted) text-right font-mono hidden sm:table-cell">
+              ₦{{ item.previous_price.toLocaleString() }}
+            </td>
+
+            <td class="px-4 py-3 text-sm text-(--text-primary) text-right font-mono">
+              ₦{{ item.latest_price.toLocaleString() }}
+            </td>
+
             <td class="px-4 py-3 text-right">
               <span
-                class="text-xs font-semibold font-mono px-2 py-1 rounded-md inline-block text-center"
+                class="text-xs font-semibold font-mono px-2 py-1 rounded-md inline-block text-center whitespace-nowrap"
                 :class="item.change > 0
                   ? 'bg-red-500/10 text-red-400'
                   : item.change < 0
                   ? 'bg-green-500/10 text-green-400'
                   : 'bg-(--background) text-(--text-muted)'"
               >
-                {{ item.change > 0 ? '+' : '' }}₦{{ item.change.toLocaleString() }}
+                {{ formatChange(item.change, item.previous_price) }}
               </span>
             </td>
           </tr>
@@ -70,7 +79,24 @@
 </template>
 
 <script setup lang="ts">
+import { computed } from 'vue'
+
 const store = useDashboardStore()
 const loading = computed(() => store.loading)
 const priceHistory = computed(() => store.priceHistory)
+
+// Formats change as: -₦5,000 (12%) — correct sign placement + percentage
+function formatChange(change: number, previousPrice: number): string {
+  if (change === 0) return '—'
+
+  const sign = change > 0 ? '+' : '-'
+  const absAmount = Math.abs(change).toLocaleString()
+  const pct = previousPrice > 0
+    ? Math.abs(Math.round((change / previousPrice) * 100))
+    : null
+
+  return pct != null
+    ? `${sign}₦${absAmount} (${pct}%)`
+    : `${sign}₦${absAmount}`
+}
 </script>

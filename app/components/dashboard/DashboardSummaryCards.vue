@@ -1,5 +1,5 @@
 <template>
-  <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+  <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
 
     <!-- Skeleton -->
     <template v-if="loading">
@@ -22,16 +22,29 @@
       <div
         v-for="card in cards"
         :key="card.label"
-        class="rounded-xl p-4 border border-(--border) bg-(--surface)"
+        class="rounded-xl p-3 sm:p-4 border border-(--border) bg-(--surface)"
       >
         <div class="flex items-center justify-between mb-3">
-          <p class="text-xs font-medium text-(--text-muted) uppercase tracking-wide">{{ card.label }}</p>
-          <div class="w-8 h-8 rounded-lg flex items-center justify-center" :style="{ background: card.iconBg }">
-            <component :is="card.icon" :size="15" :style="{ color: card.iconColor }" aria-hidden="true" />
+          <p class="text-[10px] sm:text-xs font-medium text-(--text-muted) uppercase tracking-wide truncate pr-2">
+            {{ card.label }}
+          </p>
+          <div
+            class="w-8 h-8 rounded-lg flex items-center justify-center shrink-0"
+            :style="{ background: card.iconBg }"
+          >
+            <component
+              :is="card.icon"
+              :size="15"
+              :style="{ color: card.iconColor }"
+              aria-hidden="true"
+            />
           </div>
         </div>
-        <p class="text-xl font-bold text-(--text-primary) font-mono tracking-tight">{{ card.value }}</p>
-        <p class="text-xs text-(--text-muted) mt-1">{{ card.sub }}</p>
+
+        <p class="text-lg sm:text-xl font-bold text-(--text-primary) font-mono tracking-tight truncate">
+          {{ card.value }}
+        </p>
+        <p class="text-[10px] sm:text-xs text-(--text-muted) mt-1">{{ card.sub }}</p>
       </div>
     </template>
 
@@ -39,7 +52,8 @@
 </template>
 
 <script setup lang="ts">
-import { ShoppingBag, LayoutGrid, TrendingUp, AlertCircle } from 'lucide-vue-next'
+import { computed } from 'vue'
+import { ShoppingBag, LayoutGrid, TrendingUp, Tag } from 'lucide-vue-next'
 
 const store = useDashboardStore()
 const loading = computed(() => store.loading)
@@ -48,7 +62,7 @@ const summary = computed(() => store.summary)
 const cards = computed(() => [
   {
     label: 'Total Spend',
-    value: summary.value ? `₦${summary.value.total_spend.toLocaleString()}` : '—',
+    value: summary.value != null ? `₦${summary.value.total_spend.toLocaleString()}` : '—',
     sub: 'All time',
     icon: TrendingUp,
     iconBg: 'rgba(37,99,235,0.12)',
@@ -56,7 +70,7 @@ const cards = computed(() => [
   },
   {
     label: 'Sessions',
-    value: summary.value?.total_sessions ?? '—',
+    value: summary.value != null ? summary.value.total_sessions : '—',
     sub: 'Purchase sessions',
     icon: ShoppingBag,
     iconBg: 'rgba(5,150,105,0.12)',
@@ -64,7 +78,7 @@ const cards = computed(() => [
   },
   {
     label: 'Products',
-    value: summary.value?.total_products ?? '—',
+    value: summary.value != null ? summary.value.total_products : '—',
     sub: 'Items tracked',
     icon: LayoutGrid,
     iconBg: 'rgba(124,58,237,0.12)',
@@ -72,9 +86,9 @@ const cards = computed(() => [
   },
   {
     label: 'Top Category',
-    value: summary.value?.most_bought_category ?? '—',
+    value: summary.value?.most_bought_category || '—',
     sub: 'Most purchased',
-    icon: AlertCircle,
+    icon: Tag,
     iconBg: 'rgba(217,119,6,0.12)',
     iconColor: '#D97706',
   },
