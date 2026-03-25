@@ -141,9 +141,31 @@ export interface AdminStats {
   total_sessions: number
   total_product_items: number
   active_users: number
-  active_users_last_7_days : number
-  active_users_last_30_days : number
+  active_users_last_7_days: number
+  active_users_last_30_days: number
   new_users_this_month: number
+  users: {
+    id: string
+    first_name: string
+    last_name: string
+    email: string
+    role: string
+    created_at: string
+    last_active_at?: string
+  }[]
+  recent_activity: {
+    id: string
+    type: 'new_user' | 'new_session' | 'new_product' | 'login'
+    message: string
+    created_at: string
+  }[]
+  top_spenders: {
+    user_id: string
+    first_name: string
+    last_name: string
+    email: string
+    total_spend: number
+  }[]
 }
 
 // ─── API Response ────────────────────────────────────

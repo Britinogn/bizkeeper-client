@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col gap-5">
+  <div class="flex flex-col gap-5 px-4 sm:px-6 py-4 sm:py-6 max-w-7xl mx-auto">
 
     <!-- Header -->
     <div>
@@ -7,7 +7,16 @@
       <p class="text-xs text-(--text-muted) mt-0.5">Download your purchase history as CSV or PDF</p>
     </div>
 
-    <!-- Export card -->
+    <!-- Error banner -->
+    <div
+      v-if="errorMsg"
+      class="flex items-center gap-2 px-4 py-3 rounded-lg bg-red-500/10 border border-red-500/20 text-sm text-red-400"
+    >
+      <AlertCircle :size="15" class="shrink-0" />
+      {{ errorMsg }}
+    </div>
+
+    <!-- Export cards -->
     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
 
       <!-- CSV -->
@@ -21,11 +30,12 @@
         </div>
         <button
           class="h-9 px-4 rounded-lg text-sm font-medium text-white bg-green-600 hover:bg-green-500 transition-colors disabled:opacity-50 flex items-center gap-2 w-fit"
-          :disabled="loading"
+          :disabled="exportType === 'csv'"
           @click="handleExport('csv')"
         >
-          <Download :size="14" />
-          {{ loading && exportType === 'csv' ? 'Exporting...' : 'Download CSV' }}
+          <Loader v-if="exportType === 'csv'" :size="14" class="animate-spin" />
+          <Download v-else :size="14" />
+          {{ exportType === 'csv' ? 'Exporting...' : 'Download CSV' }}
         </button>
       </div>
 
@@ -40,11 +50,12 @@
         </div>
         <button
           class="h-9 px-4 rounded-lg text-sm font-medium text-white bg-red-600 hover:bg-red-500 transition-colors disabled:opacity-50 flex items-center gap-2 w-fit"
-          :disabled="loading"
+          :disabled="exportType === 'pdf'"
           @click="handleExport('pdf')"
         >
-          <Download :size="14" />
-          {{ loading && exportType === 'pdf' ? 'Exporting...' : 'Download PDF' }}
+          <Loader v-if="exportType === 'pdf'" :size="14" class="animate-spin" />
+          <Download v-else :size="14" />
+          {{ exportType === 'pdf' ? 'Exporting...' : 'Download PDF' }}
         </button>
       </div>
 
@@ -72,14 +83,15 @@
 </template>
 
 <script setup lang="ts">
-import { FileSpreadsheet, FileText, Download } from 'lucide-vue-next'
+import { ref } from 'vue'
+import { FileSpreadsheet, FileText, Download, AlertCircle, Loader } from 'lucide-vue-next'
 
 const config = useRuntimeConfig()
 const token = useCookie<string>('auth_token')
 
-const loading = ref(false)
 const exportType = ref<'csv' | 'pdf' | null>(null)
 const selectedRange = ref('1month')
+const errorMsg = ref<string | null>(null)
 
 const ranges = [
   { label: '7 Days', value: '7days' },
@@ -90,26 +102,30 @@ const ranges = [
 ]
 
 async function handleExport(format: 'csv' | 'pdf') {
-  loading.value = true
   exportType.value = format
+  errorMsg.value = null
+
   try {
     const url = `${config.public.baseURL}/export?format=${format}&range=${selectedRange.value}`
     const response = await fetch(url, {
       headers: { Authorization: `Bearer ${token.value}` },
     })
 
-    if (!response.ok) throw new Error('Export failed')
+    if (!response.ok) throw new Error('Export failed. Please try again.')
 
     const blob = await response.blob()
     const link = document.createElement('a')
     link.href = URL.createObjectURL(blob)
     link.download = `bizkeeper-export-${selectedRange.value}.${format}`
+
+    // Append to DOM for Firefox compatibility, then clean up
+    document.body.appendChild(link)
     link.click()
+    document.body.removeChild(link)
     URL.revokeObjectURL(link.href)
-  } catch (err) {
-    console.error(err)
+  } catch (err: any) {
+    errorMsg.value = err?.message ?? 'Something went wrong during export.'
   } finally {
-    loading.value = false
     exportType.value = null
   }
 }

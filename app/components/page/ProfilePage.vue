@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col gap-5 max-w-2xl mx-auto w-full">
+  <div class="flex flex-col gap-5 px-4 sm:px-6 py-4 sm:py-6 max-w-2xl mx-auto w-full">
 
     <!-- Header -->
     <div>
@@ -56,12 +56,14 @@
       </div>
 
       <!-- Error -->
-      <div v-if="error" class="px-3 py-2.5 rounded-lg bg-red-500/10 border border-red-500/20 text-xs text-red-400">
+      <div v-if="error" class="flex items-center gap-2 px-3 py-2.5 rounded-lg bg-red-500/10 border border-red-500/20 text-xs text-red-400">
+        <AlertCircle :size="13" class="shrink-0" />
         {{ error }}
       </div>
 
       <!-- Success -->
-      <div v-if="success" class="px-3 py-2.5 rounded-lg bg-green-500/10 border border-green-500/20 text-xs text-green-400">
+      <div v-if="success" class="flex items-center gap-2 px-3 py-2.5 rounded-lg bg-green-500/10 border border-green-500/20 text-xs text-green-400">
+        <CheckCircle :size="13" class="shrink-0" />
         Profile updated successfully
       </div>
 
@@ -111,6 +113,12 @@
           </div>
           <p class="text-sm font-medium text-(--text-primary) mb-1">Are you absolutely sure?</p>
           <p class="text-sm text-(--text-muted)">This will permanently delete your account and all your data. This action cannot be undone.</p>
+
+          <!-- Delete error: shown inside modal where it's relevant -->
+          <div v-if="deleteError" class="flex items-center gap-2 mt-4 px-3 py-2.5 rounded-lg bg-red-500/10 border border-red-500/20 text-xs text-red-400">
+            <AlertCircle :size="13" class="shrink-0" />
+            {{ deleteError }}
+          </div>
         </div>
         <div class="px-6 py-4 border-t border-(--border) flex items-center justify-end gap-3">
           <button
@@ -133,7 +141,8 @@
 </template>
 
 <script setup lang="ts">
-import { X, Trash2 } from 'lucide-vue-next'
+import { ref, reactive, computed } from 'vue'
+import { X, Trash2, AlertCircle, CheckCircle } from 'lucide-vue-next'
 
 const store = useAuthStore()
 const { updateProfile, deleteAccount } = useAuth()
@@ -141,6 +150,7 @@ const { updateProfile, deleteAccount } = useAuth()
 const loading = ref(false)
 const deleting = ref(false)
 const error = ref<string | null>(null)
+const deleteError = ref<string | null>(null)
 const success = ref(false)
 const showDeleteConfirm = ref(false)
 
@@ -150,9 +160,11 @@ const form = reactive({
   email: store.user?.email ?? '',
 })
 
+// Safe initials — guards against empty first/last name
 const initials = computed(() => {
-  if (!store.user) return 'U'
-  return `${store.user.first_name[0]}${store.user.last_name[0]}`.toUpperCase()
+  const first = store.user?.first_name?.[0] ?? ''
+  const last = store.user?.last_name?.[0] ?? ''
+  return (first + last).toUpperCase() || 'U'
 })
 
 const hasChanges = computed(() =>
@@ -182,10 +194,11 @@ async function handleUpdate() {
 
 async function handleDeleteAccount() {
   deleting.value = true
+  deleteError.value = null
   try {
     await deleteAccount()
   } catch (err: any) {
-    error.value = err?.data?.message || 'Failed to delete account.'
+    deleteError.value = err?.data?.message || 'Failed to delete account.'
   } finally {
     deleting.value = false
   }

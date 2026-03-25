@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col gap-5 max-w-2xl mx-auto w-full">
+  <div class="flex flex-col gap-5 px-4 sm:px-6 py-4 sm:py-6 max-w-2xl mx-auto w-full">
 
     <!-- Header -->
     <div>
@@ -32,6 +32,7 @@
               :type="showCurrent ? 'text' : 'password'"
               placeholder="Enter current password"
               class="w-full h-9 px-3 pr-10 rounded-lg border border-(--border) bg-(--background) text-sm text-(--text-primary) placeholder:text-(--text-muted) focus:outline-none focus:border-(--primary-hover) transition-colors"
+              @input="passwordError = null"
             />
             <button
               class="absolute right-3 top-1/2 -translate-y-1/2 text-(--text-muted) hover:text-(--text-primary) transition-colors"
@@ -51,6 +52,7 @@
               :type="showNew ? 'text' : 'password'"
               placeholder="Enter new password"
               class="w-full h-9 px-3 pr-10 rounded-lg border border-(--border) bg-(--background) text-sm text-(--text-primary) placeholder:text-(--text-muted) focus:outline-none focus:border-(--primary-hover) transition-colors"
+              @input="passwordError = null"
             />
             <button
               class="absolute right-3 top-1/2 -translate-y-1/2 text-(--text-muted) hover:text-(--text-primary) transition-colors"
@@ -70,6 +72,8 @@
               :type="showConfirm ? 'text' : 'password'"
               placeholder="Confirm new password"
               class="w-full h-9 px-3 pr-10 rounded-lg border border-(--border) bg-(--background) text-sm text-(--text-primary) placeholder:text-(--text-muted) focus:outline-none focus:border-(--primary-hover) transition-colors"
+              :class="passwordMismatch ? 'border-red-500/50' : ''"
+              @input="passwordError = null"
             />
             <button
               class="absolute right-3 top-1/2 -translate-y-1/2 text-(--text-muted) hover:text-(--text-primary) transition-colors"
@@ -79,16 +83,28 @@
               <EyeOff v-else :size="15" />
             </button>
           </div>
+          <!-- Live mismatch hint -->
+          <p v-if="passwordMismatch" class="text-[11px] text-red-400">
+            Passwords do not match
+          </p>
         </div>
       </div>
 
       <!-- Error -->
-      <div v-if="passwordError" class="px-3 py-2.5 rounded-lg bg-red-500/10 border border-red-500/20 text-xs text-red-400">
+      <div
+        v-if="passwordError"
+        class="flex items-center gap-2 px-3 py-2.5 rounded-lg bg-red-500/10 border border-red-500/20 text-xs text-red-400"
+      >
+        <AlertCircle :size="13" class="shrink-0" />
         {{ passwordError }}
       </div>
 
       <!-- Success -->
-      <div v-if="passwordSuccess" class="px-3 py-2.5 rounded-lg bg-green-500/10 border border-green-500/20 text-xs text-green-400">
+      <div
+        v-if="passwordSuccess"
+        class="flex items-center gap-2 px-3 py-2.5 rounded-lg bg-green-500/10 border border-green-500/20 text-xs text-green-400"
+      >
+        <CheckCircle :size="13" class="shrink-0" />
         Password updated successfully
       </div>
 
@@ -109,7 +125,7 @@
       <div class="flex flex-col gap-2">
         <div class="flex items-center justify-between py-2 border-b border-(--border)">
           <p class="text-xs text-(--text-muted)">Account ID</p>
-          <p class="text-xs font-mono text-(--text-primary)">{{ store.user?.id?.slice(0, 8) }}...</p>
+          <p class="text-xs font-mono text-(--text-primary)">{{ shortId }}</p>
         </div>
         <div class="flex items-center justify-between py-2 border-b border-(--border)">
           <p class="text-xs text-(--text-muted)">Role</p>
@@ -128,7 +144,8 @@
 </template>
 
 <script setup lang="ts">
-import { Eye, EyeOff } from 'lucide-vue-next'
+import { ref, reactive, computed } from 'vue'
+import { Eye, EyeOff, AlertCircle, CheckCircle } from 'lucide-vue-next'
 import dayjs from 'dayjs'
 
 const store = useAuthStore()
@@ -146,11 +163,24 @@ const passwordForm = reactive({
   confirm_password: '',
 })
 
+// Only show mismatch hint once the user has typed something in confirm field
+const passwordMismatch = computed(() =>
+  passwordForm.confirm_password.length > 0 &&
+  passwordForm.new_password !== passwordForm.confirm_password
+)
+
 const isPasswordValid = computed(() =>
-  passwordForm.current_password &&
-  passwordForm.new_password.length >= 6 &&
+  passwordForm.current_password.trim() &&
+  passwordForm.new_password.trim().length >= 6 &&
   passwordForm.new_password === passwordForm.confirm_password
 )
+
+// Safe short ID — only appends '...' if the ID is actually longer than 8 chars
+const shortId = computed(() => {
+  const id = store.user?.id
+  if (!id) return '—'
+  return id.length > 8 ? `${id.slice(0, 8)}...` : id
+})
 
 async function handleChangePassword() {
   passwordLoading.value = true
