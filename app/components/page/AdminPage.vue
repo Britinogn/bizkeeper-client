@@ -140,11 +140,11 @@
         <div v-else class="relative">
           <!-- Scroll hint overlay (visible on mobile) -->
           <div class="absolute right-2 top-4 bottom-4 w-8 pointer-events-none z-10
-                      bg-gradient-to-l from-(--surface) to-transparent hidden sm:hidden">
+                      bg-linear-to-l from-(--surface) to-transparent hidden sm:hidden">
           </div>
 
           <div class="overflow-x-auto scrollbar-thin scrollbar-thumb-(--border) hover:scrollbar-thumb-(--text-muted)/50">
-            <table class="w-full min-w-[580px]"> <!-- Forces horizontal scroll on small screens -->
+            <table class="w-full min-w-145"> <!-- Forces horizontal scroll on small screens -->
               <thead>
                 <tr class="border-b border-(--border)">
                   <th scope="col" class="text-left px-4 py-2.5 text-[11px] font-medium text-(--text-muted) uppercase tracking-wider">User</th>
