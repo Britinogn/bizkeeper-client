@@ -1,6 +1,9 @@
 <template>
   <Teleport to="body">
-    <div class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60">
+    <div
+      class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60"
+      @click.self="emit('close')"
+    >
       <div class="w-full max-w-sm rounded-2xl border border-(--border) bg-(--surface) shadow-2xl">
 
         <!-- Header -->
@@ -22,7 +25,7 @@
           <p class="text-sm font-medium text-(--text-primary) mb-1">Are you sure?</p>
           <p class="text-sm text-(--text-muted)">
             This will permanently delete the session from
-            <span class="font-medium text-(--text-primary)">{{ session?.supplier_name }}</span>
+            <span class="font-medium text-(--text-primary)">{{ session?.supplier_name ?? '—' }}</span>
             on
             <span class="font-medium text-(--text-primary)">{{ formatDate(session?.purchase_date) }}</span>.
             This action cannot be undone.
@@ -52,6 +55,7 @@
 </template>
 
 <script setup lang="ts">
+import { onMounted, onUnmounted } from 'vue'
 import { X, Trash2 } from 'lucide-vue-next'
 import type { PurchaseSession } from '~/types'
 import dayjs from 'dayjs'
@@ -66,8 +70,15 @@ const emit = defineEmits<{
   confirm: []
 }>()
 
+function onKeydown(e: KeyboardEvent) {
+  if (e.key === 'Escape') emit('close')
+}
+
+onMounted(() => window.addEventListener('keydown', onKeydown))
+onUnmounted(() => window.removeEventListener('keydown', onKeydown))
+
 function formatDate(date?: string) {
-  if (!date) return ''
+  if (!date) return '—'
   return dayjs(date).format('MMM D, YYYY')
 }
 </script>

@@ -9,7 +9,7 @@
           <!-- Badge -->
           <div class="inline-flex items-center gap-2.5 px-5 py-2.5 rounded-full text-sm font-medium text-blue-600 border border-blue-200 bg-blue-50 mb-8">
             <span class="w-2 h-2 rounded-full bg-blue-500" />
-            Designed for African retailers & wholesalers
+            Built for small & growing businesses
           </div>
 
           <!-- Headline -->
@@ -199,8 +199,8 @@
           Everything you need to run your business smarter and faster.
         </h2>
         <p class="text-lg text-(--text-muted) leading-relaxed">
-          Replace notebooks and spreadsheets with clean secure digital records 
-          always accessible built for African retailers and wholesalers
+          Replace notebooks and spreadsheets with clean, secure digital records —
+          always accessible, always up to date.
         </p>
       </div>
 

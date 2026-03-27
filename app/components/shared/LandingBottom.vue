@@ -139,7 +139,7 @@
         </h2>
 
         <p class="text-lg sm:text-xl text-(--text-muted) max-w-2xl mx-auto leading-relaxed mb-10">
-          Join hundreds of African retailers and wholesalers already saving hours every week with BizKeeper.
+          Join hundreds of businesses already saving hours every week with BizKeeper.
         </p>
 
         <div class="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6">
@@ -212,7 +212,7 @@ const pricing = [
     ],
   },
   {
-    tier: 'Pro', price: '₦2,500', period: 'per month', featured: true,
+    tier: 'Pro', price: '$5.50', period: 'per month (~₦2,500)', featured: true,
     desc: 'For business owners who need the full picture — exports, alerts, and unlimited records.',
     cta: 'Start free trial',
     features: [

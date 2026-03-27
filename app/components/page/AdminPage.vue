@@ -83,9 +83,8 @@
     </div>
 
     <!-- Users table + Right column -->
-    <div class=" grid grid-cols-1 lg:grid-cols-3 gap-4">
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
 
-      <!-- Users table (2/3 width on lg) -->
       <!-- Users table (2/3 width on lg) -->
       <div class="lg:col-span-2 rounded-xl border border-(--border) bg-(--surface) overflow-hidden">
 
@@ -137,59 +136,52 @@
         </div>
 
         <!-- Scrollable Users Table -->
-        <div v-else class="relative">
-          <!-- Scroll hint overlay (visible on mobile) -->
-          <div class="absolute right-2 top-4 bottom-4 w-8 pointer-events-none z-10
-                      bg-linear-to-l from-(--surface) to-transparent hidden sm:hidden">
-          </div>
-
-          <div class="overflow-x-auto scrollbar-thin scrollbar-thumb-(--border) hover:scrollbar-thumb-(--text-muted)/50">
-            <table class="w-full min-w-145"> <!-- Forces horizontal scroll on small screens -->
-              <thead>
-                <tr class="border-b border-(--border)">
-                  <th scope="col" class="text-left px-4 py-2.5 text-[11px] font-medium text-(--text-muted) uppercase tracking-wider">User</th>
-                  <th scope="col" class="text-left px-4 py-2.5 text-[11px] font-medium text-(--text-muted) uppercase tracking-wider">Role</th>
-                  <th scope="col" class="text-left px-4 py-2.5 text-[11px] font-medium text-(--text-muted) uppercase tracking-wider">Joined</th>
-                  <th scope="col" class="text-right px-4 py-2.5 text-[11px] font-medium text-(--text-muted) uppercase tracking-wider">Last Active</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr
-                  v-for="user in filteredUsers"
-                  :key="user.id"
-                  class="border-b border-(--border) last:border-0 hover:bg-(--background) transition-colors"
-                >
-                  <td class="px-4 py-3">
-                    <div class="flex items-center gap-2.5 min-w-0">
-                      <div class="w-7 h-7 rounded-full bg-blue-500/10 flex items-center justify-center shrink-0">
-                        <span class="text-[10px] font-semibold text-blue-400 uppercase">{{ userInitials(user) }}</span>
-                      </div>
-                      <div class="min-w-0">
-                        <p class="text-sm font-medium text-(--text-primary) truncate">{{ user.first_name }} {{ user.last_name }}</p>
-                        <p class="text-xs text-(--text-muted) truncate">{{ user.email }}</p>
-                      </div>
+        <div v-else class="overflow-x-auto scrollbar-thin scrollbar-thumb-(--border) hover:scrollbar-thumb-(--text-muted)/50">
+          <table class="w-full min-w-145">
+            <thead>
+              <tr class="border-b border-(--border)">
+                <th scope="col" class="text-left px-4 py-2.5 text-[11px] font-medium text-(--text-muted) uppercase tracking-wider">User</th>
+                <th scope="col" class="text-left px-4 py-2.5 text-[11px] font-medium text-(--text-muted) uppercase tracking-wider">Role</th>
+                <th scope="col" class="text-left px-4 py-2.5 text-[11px] font-medium text-(--text-muted) uppercase tracking-wider">Joined</th>
+                <th scope="col" class="text-right px-4 py-2.5 text-[11px] font-medium text-(--text-muted) uppercase tracking-wider">Last Active</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr
+                v-for="user in filteredUsers"
+                :key="user.id"
+                class="border-b border-(--border) last:border-0 hover:bg-(--background) transition-colors"
+              >
+                <td class="px-4 py-3">
+                  <div class="flex items-center gap-2.5 min-w-0">
+                    <div class="w-7 h-7 rounded-full bg-blue-500/10 flex items-center justify-center shrink-0">
+                      <span class="text-[10px] font-semibold text-blue-400 uppercase">{{ userInitials(user) }}</span>
                     </div>
-                  </td>
-                  <td class="px-4 py-3">
-                    <span
-                      class="text-[10px] font-medium px-2 py-0.5 rounded-full capitalize"
-                      :class="user.role === 'admin'
-                        ? 'bg-purple-500/10 text-purple-400'
-                        : 'bg-blue-500/10 text-blue-400'"
-                    >
-                      {{ user.role }}
-                    </span>
-                  </td>
-                  <td class="px-4 py-3 text-xs text-(--text-muted)">
-                    {{ formatDate(user.created_at) }}
-                  </td>
-                  <td class="px-4 py-3 text-xs text-(--text-muted) text-right">
-                    {{ user.last_active_at ? formatDate(user.last_active_at) : '—' }}
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
+                    <div class="min-w-0">
+                      <p class="text-sm font-medium text-(--text-primary) truncate">{{ user.first_name }} {{ user.last_name }}</p>
+                      <p class="text-xs text-(--text-muted) truncate">{{ user.email }}</p>
+                    </div>
+                  </div>
+                </td>
+                <td class="px-4 py-3">
+                  <span
+                    class="text-[10px] font-medium px-2 py-0.5 rounded-full capitalize"
+                    :class="user.role === 'admin'
+                      ? 'bg-purple-500/10 text-purple-400'
+                      : 'bg-blue-500/10 text-blue-400'"
+                  >
+                    {{ user.role }}
+                  </span>
+                </td>
+                <td class="px-4 py-3 text-xs text-(--text-muted)">
+                  {{ formatDate(user.created_at) }}
+                </td>
+                <td class="px-4 py-3 text-xs text-(--text-muted) text-right">
+                  {{ user.last_active_at ? formatDate(user.last_active_at) : '—' }}
+                </td>
+              </tr>
+            </tbody>
+          </table>
         </div>
 
       </div>
