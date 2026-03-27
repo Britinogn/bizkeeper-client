@@ -43,20 +43,39 @@
           </div>
 
           <!-- Stats -->
-          <div class="flex items-center gap-8 md:gap-12 flex-wrap justify-center lg:justify-start">
-            <template v-for="(stat, i) in stats" :key="stat.label">
-              <div class="text-center lg:text-left">
-                <p class="text-3xl md:text-4xl font-bold font-mono tracking-tight text-(--text-primary)">
-                  {{ stat.value }}
-                </p>
-                <p class="text-sm text-(--text-muted) mt-1.5">
-                  {{ stat.label }}
-                </p>
-              </div>
-              <div
-                v-if="i < stats.length - 1"
-                class="hidden sm:block w-px h-10 bg-(--border)"
-              />
+          <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6">
+            <template v-for="(stat, index) in stats" :key="stat.label">
+            <div class="bg-(--surface) border border-(--border) rounded-2xl p-6 hover:border-(--primary)/30 transition-all hover:shadow-sm group">
+
+            <div class="flex justify-between items-start">
+            <!-- Icon -->
+            <div 
+            class="w-11 h-11 rounded-2xl flex items-center justify-center shrink-0 transition-transform group-hover:scale-110"
+            :style="{ backgroundColor: stat.iconBg || 'rgba(37, 99, 235, 0.1)' }"
+            >
+            <component 
+              :is="stat.icon" 
+              :size="22" 
+              :style="{ color: stat.iconColor || '#2563eb' }" 
+            />
+            </div>
+
+            <!-- Value -->
+            <div class="text-right">
+            <p class="text-4xl font-bold font-mono tracking-tighter text-(--text-primary)">
+              {{ stat.value }}
+            </p>
+            </div>
+            </div>
+
+            <!-- Label -->
+            <p class="text-[13px] text-(--text-muted) mt-6 font-medium">
+            {{ stat.label }}
+            </p>
+
+            <!-- Accent Bar -->
+            <div class="mt-6 h-1 bg-linear-to-r from-(--primary) to-(--primary)/40 rounded-full w-12 group-hover:w-20 transition-all"></div>
+            </div>
             </template>
           </div>
         </div>
@@ -245,14 +264,38 @@
 <script setup lang="ts">
 import {
   ArrowRight, LayoutDashboard, BookOpen, TrendingUp,
-  Bell, Download, Lock, ShoppingBag, BarChart2
+  Bell, Download, Lock, ShoppingBag, BarChart2 , Shield, FileText, Infinity
 } from 'lucide-vue-next'
 
 const stats = [
-  { value: '100%', label: 'Private data' },
-  { value: 'PDF', label: 'Export ready' },
-  { value: '∞', label: 'Sessions' },
-  { value: '14d', label: 'Reorder alerts' },
+  { 
+    value: '100%', 
+    label: 'Private data',
+    icon: Shield,
+    iconBg: 'rgba(16, 185, 129, 0.12)',   // green
+    iconColor: '#10b981'
+  },
+  { 
+    value: 'PDF', 
+    label: 'Export ready',
+    icon: FileText,
+    iconBg: 'rgba(59, 130, 246, 0.12)',   // blue
+    iconColor: '#3b82f6'
+  },
+  { 
+    value: '∞', 
+    label: 'Sessions',
+    icon: Infinity,
+    iconBg: 'rgba(139, 92, 246, 0.12)',   // purple
+    iconColor: '#8b5cf6'
+  },
+  { 
+    value: '14d', 
+    label: 'Reorder alerts',
+    icon: Bell,
+    iconBg: 'rgba(245, 158, 11, 0.12)',   // amber
+    iconColor: '#f59e0b'
+  }
 ]
 
 const sidebarItems = [
