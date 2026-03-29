@@ -158,7 +158,7 @@
           </a>
         </div>
 
-        <!-- Trust micro-copy – very important for conversion in African markets -->
+        <!-- Trust micro-copy – very important for conversion in the markets -->
         <p class="mt-8 text-sm text-(--text-muted)">
           No card required • Cancel anytime • Free to start
         </p>

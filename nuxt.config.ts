@@ -1,23 +1,46 @@
 import tailwindcss from "@tailwindcss/vite";
 import outray from "@outray/vite";
+import { seoConfig } from './app/config/seo.config';
 
 export default defineNuxtConfig({
   compatibilityDate: '2025-07-15',
   devtools: { enabled: true },
   ssr: true,
 
+  // app: {
+  //   head: {
+  //     title: 'BizKeeper',
+  //     meta: [
+  //       { name: 'description', content: 'A digital ledger for business owners to track bulk purchases.' }
+  //     ],
+  //     link: [
+  //       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+  //       { rel: 'manifest', href: '/manifest.webmanifest' }, 
+  //       // {rel: "manifest", href: "/manifest.json"}
+  //     ]
+  //   }
+  // },
+
+
   app: {
     head: {
-      title: 'BizKeeper',
+      htmlAttrs: { lang: 'en' },
+      titleTemplate: `%s | ${seoConfig.appName}`,
       meta: [
-        { name: 'description', content: 'A digital ledger for business owners to track bulk purchases.' }
+        { charset: 'utf-8' },
+        { name: 'viewport', content: 'width=device-width, initial-scale=1' },
+        { name: 'description', content: seoConfig.description },
+        { name: 'keywords', content: seoConfig.keywords },
+        { name: 'theme-color', content: seoConfig.themeColor },
+        { property: 'og:type', content: 'website' },
+        { property: 'og:site_name', content: seoConfig.siteName },
+        { property: 'og:locale', content: seoConfig.locale },
       ],
       link: [
+        { rel: 'canonical', href: seoConfig.url },
         { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
-        { rel: 'manifest', href: '/manifest.webmanifest' }, 
-        // {rel: "manifest", href: "/manifest.json"}
-      ]
-    }
+      ],
+    },
   },
 
   css: ['~/assets/css/main.css'],
@@ -60,7 +83,7 @@ export default defineNuxtConfig({
     manifest: {
       name: 'BizKeeper',
       short_name: 'BizKeeper',
-      description: 'Digital purchase records for African business owners',
+      description: 'Digital purchase records for business owners',
       theme_color: '#2563EB',
       background_color: '#0F0F0F',
       display: 'standalone',

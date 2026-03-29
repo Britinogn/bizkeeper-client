@@ -1,6 +1,6 @@
 # BizKeeper
 
-**Digital purchase records for African business owners.**
+**Digital purchase records for business owners.**
 
 BizKeeper replaces the physical ledger book. Record bulk purchases, track spending by category and supplier, monitor price changes over time, and export your records as PDF or CSV — all in one secure, private web app.
 

@@ -2,13 +2,13 @@
 
 export const seoConfig = {
   appName: 'BizKeeper',
-  title: 'BizKeeper - Digital Purchase Records for African Business Owners',
-  description: 'BizKeeper helps business owners in Africa ditch the notebook. Record bulk purchases, track spending by category, monitor price changes, and export reports as PDF or CSV — all in one secure place.',
-  keywords: 'business records app, purchase tracker Nigeria, digital ledger Africa, bulk purchase recording, spending tracker, price history, reorder reminders, business expense tracker, CSV export, PDF report, BizKeeper',
-  url: 'https://bizkeeper.com', // ← change to your real domain
+  title: 'BizKeeper - Digital Purchase Records for Business Owners',
+  description: 'BizKeeper helps business owners replace the notebook. Record bulk purchases, track spending by category, monitor price changes, and export reports as PDF or CSV — all in one secure place.',
+  keywords: 'purchase record app for business, business expense tracker, bulk purchase tracker, stock purchase log app, small business spending tracker, digital ledger, price history, reorder reminders, CSV export, PDF report, BizKeeper',
+  url: 'https://bizkeeper.pxxl.click',
   siteName: 'BizKeeper',
   locale: 'en_US',
-  themeColor: '#2563EB', // blue-600
+  themeColor: '#2563EB',
 
   // Social images (replace with your actual assets)
   ogImage: '/og-image.jpg', // 1200x630 recommended
@@ -21,9 +21,9 @@ export const seoConfig = {
       // Organization
       {
         '@type': 'Organization',
-        '@id': 'https://bizkeeper.com/#organization',
+        '@id': 'https://bizkeeper.pxxl.click/#organization',
         name: 'BizKeeper',
-        url: 'https://bizkeeper.com',
+        url: 'https://bizkeeper.pxxl.click',
         logo: '/logo.png',
         sameAs: [
           'https://twitter.com/britinogn',
@@ -35,22 +35,22 @@ export const seoConfig = {
           telephone: '+234-000-000-0000',
           contactType: 'customer service',
           email: 'support@bizkeeper.com',
-          areaServed: 'NG'
+          areaServed: 'Worldwide'
         }
       },
       // WebApplication
       {
         '@type': 'WebApplication',
-        '@id': 'https://bizkeeper.com/#webapp',
+        '@id': 'https://bizkeeper.pxxl.click/#webapp',
         name: 'BizKeeper',
-        url: 'https://bizkeeper.com',
-        description: 'Record bulk purchases, track spending, monitor price changes, and export digital ledger reports — built for business owners in Africa.',
+        url: 'https://bizkeeper.pxxl.click',
+        description: 'Record bulk purchases, track spending, monitor price changes, and export digital ledger reports — built for business owners everywhere.',
         applicationCategory: 'BusinessApplication',
         operatingSystem: 'Web',
         offers: {
           '@type': 'Offer',
           price: '0',
-          priceCurrency: 'NGN'
+          priceCurrency: 'USD'
         },
         aggregateRating: {
           '@type': 'AggregateRating',

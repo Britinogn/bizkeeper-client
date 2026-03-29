@@ -88,7 +88,7 @@
 
             <NuxtImg
               src="/img/bizkeeper-hero.png"
-              alt="BizKeeper dashboard — clean view of inventory, sales and purchases for African shops"
+              alt="BizKeeper dashboard — clean view of inventory, sales and purchases for business owners"
               class="relative rounded-3xl border border-(--border) shadow-2xl transition-all duration-500 group-hover:scale-[1.03] group-hover:shadow-blue-900/10 object-cover w-full h-auto"
               width="1000"
               height="680"
